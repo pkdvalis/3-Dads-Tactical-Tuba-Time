@@ -34,10 +34,10 @@ body {
   gap: 5px;
   width: 300px;
   height: 300px;
-  border: 10px solid red;
+  border: 0px solid red;
   transform: rotateX(50deg); /* Tilt the board backward */
   transform-origin: top center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 1px rgba(117, 116, 97, 0.5);
 }
 
 button {
