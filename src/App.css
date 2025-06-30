@@ -1,10 +1,43 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#game {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(51, 51, 51, 0.7);
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 10px solid red;
+  text-align: center;
+}
+
+.board-wrapper {
+  perspective: 700px;
+  transform-style: preserve-3d;
+}
+
 .board {
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
   grid-template-rows: repeat(3, 1fr); /* 3 equal rows */
   gap: 5px;
   width: 300px;
   height: 300px;
+  border: 10px solid red;
+  transform: rotateX(50deg); /* Tilt the board backward */
+  transform-origin: top center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 button {
@@ -12,14 +45,36 @@ button {
   height: 100%;
   font-size: 2rem;
   cursor: pointer;
+  border-radius: 0 !important;
 }
 
 #reset {
-  width: 95px;
+  height: 95px;
+  width: 190px;
+  font-size: 1.5rem;
 }
 
 #finish {
+  margin-top: 15px;
+  font-size: 1.5rem;
+  height: 50px;
+  width: 100px;
+  border-radius: 0; /* Sharp corners */
+}
+
+.square {
   width: 100%;
   height: 100%;
   font-size: 2rem;
+  font-family: monospace;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+  transform: translateZ(20px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }

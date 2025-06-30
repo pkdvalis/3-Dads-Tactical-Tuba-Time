@@ -101,7 +101,9 @@ export default function App() {
 
   
   return (
-  <>
+  <div id="game">
+    <p id="finish" ref={fin}>{winner}</p>
+    <div className='board-wrapper'>
     <div className="board">
 
       {
@@ -127,6 +129,9 @@ export default function App() {
 
       }
       
+  
+    </div>
+    </div>
     <button onClick={() => {
       setMoves(0)
       //fin.current.style.display = "none"
@@ -137,9 +142,8 @@ export default function App() {
 
 
     } id="reset">Reset</button>
+    
     </div>
-    <p id="finish" ref={fin}>{winner}</p>
-    </>
     
     
   )
