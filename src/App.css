@@ -17,7 +17,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 10px solid red;
   text-align: center;
 }
 
@@ -34,7 +33,6 @@ body {
   gap: 5px;
   width: 400px;
   height: 200px;
-  border: 0px solid red;
   transform: rotateX(50deg); /* Tilt the board backward */
   transform-origin: top center;
   box-shadow: 0px 5px 1px rgba(117, 116, 97, 0.5);

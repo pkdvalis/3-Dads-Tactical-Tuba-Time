@@ -56,7 +56,7 @@ export default function App() {
       let win = true;
       for (let yy=0; yy<=2; yy++) {
         
-        if (array[x][yy] != turn) win = false;
+        if (array[z][x][yy] != turn) win = false;
       }
       
       if (win) {
@@ -67,14 +67,24 @@ export default function App() {
       //check col
       win = true;
       for (let xx=0; xx<=2; xx++) {
-        
-        if (array[xx][y] != turn) win = false;
+        if (array[z][xx][y] != turn) win = false;
       }
       
-           if (win) {
+      if (win) {
         setWinner(`${turn} has won!`)
-        //finish(turn)
-        return}
+        return
+      }
+
+      //check vertical
+      win = true;
+      for (let zz=0; zz<=2; zz++) {
+        if (array[zz][x][y] != turn) win = false;
+      }
+      
+      if (win) {
+        setWinner(`${turn} has won!`)
+        return
+      }
 
       //check diags
       if (x == 0 && y == 1) return;
@@ -85,7 +95,7 @@ export default function App() {
       let yy = 0;
       for (let xx=0; xx<=2; xx++) {
         //console.log("checking",xx,yy,array[xx][yy])
-        if (array[xx][yy] != turn) win = false;
+        if (array[z][xx][yy] != turn) win = false;
         yy++;
       }
           if (win) {
@@ -97,7 +107,7 @@ export default function App() {
       yy = 2;
       for (let xx=0; xx<=2; xx++) {
         //console.log("checking",xx,yy,array[xx][yy])
-        if (array[xx][yy] != turn) win = false;
+        if (array[z][xx][yy] != turn) win = false;
         yy--;
       }
             if (win) {
