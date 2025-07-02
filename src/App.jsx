@@ -3,10 +3,22 @@ import './App.css'
 
 export default function App() {
   const initialGrid = [
+  [
     ["", "", ""],
     ["", "", ""],
     ["", "", ""]
-      ];
+      ],
+  [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""]
+      ],
+  [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""]
+      ],
+    ];
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
@@ -25,14 +37,14 @@ export default function App() {
   
   }
 
-  const handleClick = (x,y) => {
-    
+  const handleClick = (z,x,y) => {
+    console.log(grid)
 
     setMoves(moves + 1)
     
     setGrid(prev => {
       let na = [...prev]
-      na[x][y] = turn
+      na[z][x][y] = turn
       checkWin(na)
       return na
       })
@@ -107,7 +119,7 @@ export default function App() {
     <div className="board">
 
       {
-        grid.map((row,x) => {
+        grid[0].map((row,x) => {
           return row.map((square, y) => {
             
           
@@ -116,12 +128,72 @@ export default function App() {
               if (e.target.innerText != "") return;
               console.log(winner)
               if (winner) return;
-              handleClick(x,y);
+              handleClick(0,x,y);
               
               setTurn(prev => prev == "X"? "O" : "X")
               
               }}
-            key={x+y} 
+            key={0+x+y} 
+            className="square">{square}</button>
+
+          })
+        })
+
+      }
+      
+  
+    </div>
+    </div>
+
+    <div className='board-wrapper'>
+    <div className="board">
+
+      {
+        grid[1].map((row,x) => {
+          return row.map((square, y) => {
+            
+          
+          return <button 
+            onClick={(e) => {
+              if (e.target.innerText != "") return;
+              console.log(winner)
+              if (winner) return;
+              handleClick(1,x,y);
+              
+              setTurn(prev => prev == "X"? "O" : "X")
+              
+              }}
+            key={1+x+y} 
+            className="square">{square}</button>
+
+          })
+        })
+
+      }
+      
+  
+    </div>
+    </div>
+
+    <div className='board-wrapper'>
+    <div className="board">
+
+      {
+        grid[2].map((row,x) => {
+          return row.map((square, y) => {
+            
+          
+          return <button 
+            onClick={(e) => {
+              if (e.target.innerText != "") return;
+              console.log(winner)
+              if (winner) return;
+              handleClick(2,x,y);
+              
+              setTurn(prev => prev == "X"? "O" : "X")
+              
+              }}
+            key={2+x+y} 
             className="square">{square}</button>
 
           })
