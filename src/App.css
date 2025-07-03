@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+#computer {
+  z-index: 100;
+}
+
 #game {
   position: fixed;
   width: 100%;
@@ -44,20 +48,13 @@ button {
   font-size: 2rem;
   cursor: pointer;
   border-radius: 0 !important;
+  transition: 1s;
 }
 
 #reset {
   height: 95px;
   width: 190px;
   font-size: 1.5rem;
-}
-
-#finish {
-  margin-top: 15px;
-  font-size: 1.5rem;
-  height: 50px;
-  width: 100px;
-  border-radius: 0; /* Sharp corners */
 }
 
 .square {
