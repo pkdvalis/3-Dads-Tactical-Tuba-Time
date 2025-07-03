@@ -133,23 +133,24 @@ export default function App() {
     }, 5000)
   }
 
-  const computerMove = (passed,point) => {
-    console.log("POINT",point)
+  const computerMove = (currentTurn,point) => {
+    
+    
+    //delay for state update
     const move = setTimeout(() => {
-
       
+      //check the winning patters that contain recent move
       for (let pattern of winningPatterns) {
-        
         if (pattern.includes(point)) {
-          console.log(pattern)
+          //remove previous move
           pattern.splice(pattern.indexOf(point), 1); 
-          console.log(pattern)
-          
+          //choose a free space from the pattern
           for (let array of pattern) {
             let [zz,xx,yy] = array.split(",")
             if (grid[zz][xx][yy] == "") {
+              
               if (winner) return;
-              handleClick(zz,xx,yy,passed);
+              handleClick(zz,xx,yy,currentTurn);
               
               return;
             }
@@ -181,7 +182,6 @@ export default function App() {
     setGrid(prev => {
       let na = [...prev]
       na[z][x][y] = currentTurn
-      
       return na
       })
 
@@ -190,8 +190,6 @@ export default function App() {
     let next = currentTurn == "X"? "O" : "X";
     if (next == "O" && oplayer) computerMove("O",[z,x,y].toString());
     
-    
-
     //draw
     if (moves == 26) setWinner("It's a tie!")
 
