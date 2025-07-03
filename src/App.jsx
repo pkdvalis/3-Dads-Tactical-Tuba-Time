@@ -94,14 +94,14 @@ export default function App() {
   const fin = useRef(null);
 
   useEffect(() => {
-    
+    console.log("useEffect triggered", turn)
     for (let pattern of winningPatterns) {
       let currentTurn = turn == "X"? "O" : "X"
       if (pattern.includes(lastMove.toString())) {
         let win = true;
         for (let array of pattern) {
           let [zz,xx,yy] = array.split(",")
-          console.log("grid",grid[zz][xx][yy],"turn", currentTurn)
+          
           if (grid[zz][xx][yy] != currentTurn) win = false;
         }
 
@@ -138,7 +138,7 @@ export default function App() {
     
     //delay for state update
     const move = setTimeout(() => {
-      
+      if (winner) return;
       //check the winning patters that contain recent move
       for (let pattern of winningPatterns) {
         if (pattern.includes(point)) {
@@ -162,19 +162,9 @@ export default function App() {
         }
       
     }
-    }, 500)
+    }, 2000)
   }
 
-  const finish = (result) => {
-    if (result == "tie") {
-      fin.current.innerText = "It's a tie!"
-    } else {
-      fin.current.innerText = `${result} has won!`
-    }
-
-    fin.current.style.visibility = "visible"
-  
-  }
 
   const handleClick = (z,x,y,currentTurn) => {
     setMoves(moves + 1)
