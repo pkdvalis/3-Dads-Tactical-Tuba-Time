@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css'
 
 const winningPatterns = [
@@ -86,38 +86,33 @@ export default function App() {
     ];
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
-  const [lastMove, setLastMove] = useState([])
   const [winner, setWinner] = useState(false)
   const [moves, setMoves] = useState(0)
-  const [xplayer, setXplayer] = useState(false)
   const [oplayer, setOplayer] = useState(true)
-  const fin = useRef(null);
-
-  useEffect(() => {
-    console.log("useEffect triggered", turn)
+  
+  const checkWin = (newGrid, previousMove, currentTurn) => {
     for (let pattern of winningPatterns) {
-      let currentTurn = turn == "X"? "O" : "X"
-      if (pattern.includes(lastMove.toString())) {
+      
+      if (pattern.includes(previousMove.toString())) {
         let win = true;
         for (let array of pattern) {
           let [zz,xx,yy] = array.split(",")
-          
-          if (grid[zz][xx][yy] != currentTurn) win = false;
+          if (newGrid[zz][xx][yy] != currentTurn) win = false;
         }
 
         if (win) {
           setWinner(`${currentTurn} has won!`)
           highlight(pattern);
-          return;
+          return true;
         }
 
       }
     }
 
     
-   
+   return false;
 
-  }, [turn])
+  }
 
 
   const highlight = (array) => {
@@ -133,57 +128,61 @@ export default function App() {
     }, 5000)
   }
 
-  const computerMove = (currentTurn,point) => {
-    
-    
-    //delay for state update
-    const move = setTimeout(() => {
-      if (winner) return;
-      //check the winning patters that contain recent move
-      for (let pattern of winningPatterns) {
-        if (pattern.includes(point)) {
-          //remove previous move
-          pattern.splice(pattern.indexOf(point), 1); 
-          //choose a free space from the pattern
-          for (let array of pattern) {
-            let [zz,xx,yy] = array.split(",")
-            if (grid[zz][xx][yy] == "") {
-              
-              if (winner) return;
-              handleClick(zz,xx,yy,currentTurn);
-              
-              return;
-            }
-
+  const computerMove = (point, newGrid) => {
+    //check the winning patterns that contain recent move
+    for (let pattern of winningPatterns) {
+      if (pattern.includes(point.toString())) {
+        //remove previous move
+        pattern.splice(pattern.indexOf(point.toString()), 1); 
+        //choose a free space from the pattern
+        for (let array of pattern) {
+          let [zz,xx,yy] = array.split(",")
+          if (newGrid[zz][xx][yy] == "") {
+            return [zz,xx,yy];
           }
-
-          
-
         }
-      
+      }
     }
-    }, 2000)
+      
+   
   }
+
 
 
   const handleClick = (z,x,y,currentTurn) => {
-    setMoves(moves + 1)
+    console.log(currentTurn, turn)
     
-    setGrid(prev => {
-      let na = [...prev]
-      na[z][x][y] = currentTurn
-      return na
-      })
+    let win;
+    const newGrid = grid;
+    newGrid[z][x][y] = turn;
+    win = checkWin(newGrid, [z,x,y], currentTurn)
+    if (win) {
+      setGrid(newGrid)
+      return;
+    }
 
-    setLastMove([z,x,y])
-    setTurn(prev => prev == "X"? "O" : "X")                            
-    let next = currentTurn == "X"? "O" : "X";
-    if (next == "O" && oplayer) computerMove("O",[z,x,y].toString());
+    if (moves == 26) {
+      setWinner("It's a tie!")
+      return;
+    }
+
+    setMoves(prev => prev + 1)
+
+    //computer move
+    if (turn == "X" && oplayer) {
+      let [zz,xx,yy] = computerMove([z,x,y], newGrid);
+      newGrid[zz][xx][yy] = "O"
+      if (checkWin(newGrid, [zz,xx,yy], "O")) {
+        setGrid(newGrid)
+        return;
+      }
+    } else {
+      setTurn(prev => prev == "X"? "O" : "X")
+    }
+    setGrid(newGrid)
+      
     
-    //draw
-    if (moves == 26) setWinner("It's a tie!")
-
-  }
+ }
 
   
   return (
@@ -193,8 +192,7 @@ export default function App() {
     
     <p id="computer">
       Computer controls:
-      <label htmlFor="xplayer">X</label>
-      <input type="checkbox" id="xplayer" name="xplayer" checked={xplayer} onChange={() => setXplayer(!xplayer)} />
+     
       <label htmlFor="oplayer">O</label>
       <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
     </p>
