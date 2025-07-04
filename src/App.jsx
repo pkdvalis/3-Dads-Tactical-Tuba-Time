@@ -128,7 +128,7 @@ export default function App() {
   const computerMove = (point, newGrid) => {
 
     //make db of patterns
-    let possibleMove = [[],0];
+    let possibleMoves = [[[],0]];
     for (let pattern of winningPatterns) {
       
         //count Xs it has
@@ -140,20 +140,25 @@ export default function App() {
           }
         }
         //store it if it's biggest
-        console.log(num, possibleMove[1])
-        if (num >= possibleMove[1]) {
-          possibleMove = [pattern,num]
+        if (num >= possibleMoves[possibleMoves.length-1][1] && num > 0) {
+          possibleMoves.push([pattern,num])
         }
+        
       }
-
-    
+        possibleMoves.shift()
+        
         //Return a free space in the pattern
-        for (let array of possibleMove[0]) {
-          let [zz,xx,yy] = array.split(",")
-          if (newGrid[zz][xx][yy] == "") {
-            return [zz,xx,yy];
+        for (let i = possibleMoves.length - 1; i >= 0; i--) {
+          for (let pattern of possibleMoves[i]) {
+            if (!Array.isArray(pattern)) continue;
+              for (let array of pattern) {
+              let [zz,xx,yy] = array.split(",")
+                if (newGrid[zz][xx][yy] == "") {
+                  return [zz,xx,yy];
+                }
           }
         }
+      }
         
      
   }
