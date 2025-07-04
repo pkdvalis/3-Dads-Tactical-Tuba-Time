@@ -126,23 +126,36 @@ export default function App() {
   }
 
   const computerMove = (point, newGrid) => {
-    //check the winning patterns that contain recent move
+
+    //make db of patterns
+    let possibleMove = [[],0];
     for (let pattern of winningPatterns) {
-      if (pattern.includes(point.toString())) {
-        //remove previous move
-        //pattern.splice(pattern.indexOf(point.toString()), 1); 
-        //choose a free space from the pattern
+      
+        //count Xs it has
+        let num = 0;
         for (let array of pattern) {
           let [zz,xx,yy] = array.split(",")
+          if (newGrid[zz][xx][yy] == "X") {
+            num++;
+          }
+        }
+        //store it if it's biggest
+        console.log(num, possibleMove[1])
+        if (num >= possibleMove[1]) {
+          possibleMove = [pattern,num]
+        }
+      }
+
+    
+        //Return a free space in the pattern
+        for (let array of possibleMove[0]) {
+          let [zz,xx,yy] = array.split(",")
           if (newGrid[zz][xx][yy] == "") {
-            console.log(winningPatterns)
             return [zz,xx,yy];
           }
         }
-      }
-    }
-  
-   
+        
+     
   }
 
 
