@@ -91,6 +91,7 @@ export default function App() {
   const [oplayer, setOplayer] = useState(true)
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
+    console.log("newGrid",newGrid)
     for (let pattern of winningPatterns) {
       
       if (pattern.includes(previousMove.toString())) {
@@ -105,16 +106,12 @@ export default function App() {
           highlight(pattern);
           return true;
         }
-
       }
     }
-
-    
    return false;
-
   }
 
-
+  //highlight winning pattern
   const highlight = (array) => {
     for (let point of array) {
       document.getElementById(point.replaceAll(",","")).style.backgroundColor = "lightgreen";
@@ -125,10 +122,11 @@ export default function App() {
         document.getElementById(point.replaceAll(",","")).style.backgroundColor = "white";
       }
 
-    }, 5000)
+    }, 3000)
   }
 
   const computerMove = (point, newGrid) => {
+    
     //check the winning patterns that contain recent move
     for (let pattern of winningPatterns) {
       if (pattern.includes(point.toString())) {
@@ -151,13 +149,12 @@ export default function App() {
 
   const handleClick = (z,x,y,currentTurn) => {
     console.log(currentTurn, turn)
-    
     let win;
+    
     const newGrid = grid;
     newGrid[z][x][y] = turn;
-    win = checkWin(newGrid, [z,x,y], currentTurn)
-    if (win) {
-      setGrid(newGrid)
+    setGrid(newGrid)
+    if (checkWin(newGrid, [z,x,y], currentTurn)) {
       return;
     }
 
@@ -172,14 +169,15 @@ export default function App() {
     if (turn == "X" && oplayer) {
       let [zz,xx,yy] = computerMove([z,x,y], newGrid);
       newGrid[zz][xx][yy] = "O"
+      setGrid(newGrid)
       if (checkWin(newGrid, [zz,xx,yy], "O")) {
-        setGrid(newGrid)
         return;
       }
     } else {
       setTurn(prev => prev == "X"? "O" : "X")
+      return;
     }
-    setGrid(newGrid)
+    
       
     
  }
@@ -193,7 +191,7 @@ export default function App() {
     <p id="computer">
       Computer controls:
      
-      <label htmlFor="oplayer">O</label>
+      <label htmlFor="oplayer"> O</label>
       <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
     </p>
 
@@ -286,10 +284,10 @@ export default function App() {
     </div>
     <button onClick={() => {
       setMoves(0)
-      //fin.current.style.display = "none"
       setWinner(false)
       setGrid(initialGrid);
       setTurn("X");
+      return;
     }
 
 
