@@ -89,6 +89,9 @@ export default function App() {
   const [winner, setWinner] = useState(false)
   const [moves, setMoves] = useState(0)
   const [oplayer, setOplayer] = useState(true)
+  const [score, setScore] = useState({X: 0, O: 0});
+  const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
+
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
     console.log("newGrid",newGrid)
@@ -103,7 +106,12 @@ export default function App() {
 
         if (win) {
           setWinner(`${currentTurn} has won!`)
-          highlight(pattern);
+          setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
+          if (score[currentTurn] + 1 > highScore[1]) {
+            setHighScore([currentTurn, score[currentTurn] + 1])
+            localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
+          }
+          highlight(pattern,"lightgreen",4000);
           return true;
         }
       }
@@ -112,17 +120,19 @@ export default function App() {
   }
 
   //highlight winning pattern
-  const highlight = (array) => {
+  let resetColor;
+  const highlight = (array, color, timeDelay) => {
+    clearTimeout(resetColor);
     for (let point of array) {
-      document.getElementById(point.replaceAll(",","")).style.backgroundColor = "lightgreen";
+      document.getElementById(point.replaceAll(",","")).style.backgroundColor = color;
     }
 
-    let resetColor = setTimeout(() => {
+    resetColor = setTimeout(() => {
       for (let point of array) {
         document.getElementById(point.replaceAll(",","")).style.backgroundColor = "white";
       }
 
-    }, 3000)
+    }, timeDelay)
   }
 
   const computerMove = (point, newGrid) => {
@@ -166,7 +176,7 @@ export default function App() {
 
 
   const handleClick = (z,x,y,currentTurn) => {
-    console.log(currentTurn, turn)
+    //highlight([`${z},${x},${y}`],"gold",500);
     let win;
     
     const newGrid = grid;
@@ -190,6 +200,7 @@ export default function App() {
       
         let [zz,xx,yy] = computerMove([z,x,y], newGrid);
         newGrid[zz][xx][yy] = "O"
+        highlight([`${zz},${xx},${yy}`],"gold",500);
         setGrid(newGrid)
         if (checkWin(newGrid, [zz,xx,yy], "O")) {
           return;
@@ -209,13 +220,34 @@ export default function App() {
     
   
   <div id="game">
-    
-    <p id="computer">
+    <div className="sidebar">
+    <div id="computer">
+      <p>3Dads Tactical Tuba Time</p>
+      <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
+      <p>Score <br />X: {score['X']} <br />O: {score['O']}</p>
       Computer controls:
      
       <label htmlFor="oplayer"> O</label>
       <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
-    </p>
+    </div>
+<p>    <button onClick={() => {
+      setMoves(0)
+      setWinner(false)
+      setGrid(initialGrid);
+      setTurn("X");
+      return;
+    }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
+</p><p>
+    <button onClick={() => {
+      localStorage.removeItem('highScore')
+      setHighScore(['X',0])
+    }}
+    id="resetHs">Reset High Score</button>
+</p>
+
+    </div>
+
+    <div className='center'>
 
     <div className='board-wrapper'>
     <div className="board">
@@ -304,18 +336,9 @@ export default function App() {
   
     </div>
     </div>
-    <button onClick={() => {
-      setMoves(0)
-      setWinner(false)
-      setGrid(initialGrid);
-      setTurn("X");
-      return;
-    }
 
-
-    } id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
     
-    
+      </div>
     </div>
     
     

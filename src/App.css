@@ -2,26 +2,46 @@ html,
 body {
   height: 100%;
   margin: 0;
+  background: rgb(117, 126, 129);
 }
 
 #computer {
+  font-size: 1.5rem;
   z-index: 100;
+}
+
+#oplayer {
+  width: 25px;
+  height: 25px;
 }
 
 #game {
   position: fixed;
-  width: 100%;
+  width: 75%;
   height: 100%;
   left: 0;
   top: 0;
-  background: rgba(51, 51, 51, 0.7);
+
   z-index: 10;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+.sidebar {
+  width: 50px;
+  flex: 1;
+  padding: 10px;
+
+  /*align-self: flex-start; */
+}
+
+.center {
+  flex: 2;
+  width: 100%;
+  padding: 10px;
 }
 
 .board-wrapper {
@@ -48,13 +68,34 @@ button {
   font-size: 2rem;
   cursor: pointer;
   border-radius: 0 !important;
-  transition: 1s;
+  transition: 0.2s;
+  box-shadow: 0px 5px 0px rgba(31, 31, 31, 0.75);
+  -webkit-transition: background-color 2000ms;
+  -ms-transition: background-color 2000ms;
+  transition: background-color 2000ms;
+}
+
+button:hover {
+  z-index: 15;
+  box-shadow: 0px 10px 5px rgba(31, 31, 31, 1);
+  transform: translate(0px, -5px);
+}
+
+button:active {
+  transform: scale(105%);
+  background-color: gold;
 }
 
 #reset {
   height: 95px;
   width: 190px;
   font-size: 1.5rem;
+}
+
+#resetHs {
+  height: 50px;
+  width: 190px;
+  font-size: 1rem;
 }
 
 .square {
@@ -71,5 +112,5 @@ button {
   padding: 0;
   box-sizing: border-box;
   transform: translateZ(20px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 0px rgba(31, 31, 31, 0.75);
 }
