@@ -10,6 +10,11 @@ body {
   z-index: 100;
 }
 
+.turn {
+  font-size: 1.5rem;
+  z-index: 100;
+}
+
 #oplayer {
   width: 25px;
   height: 25px;

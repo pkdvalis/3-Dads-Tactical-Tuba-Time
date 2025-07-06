@@ -105,6 +105,7 @@ export default function App() {
         }
 
         if (win) {
+          clearTimeout(resetColor);
           setWinner(`${currentTurn} has won!`)
           setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
           if (score[currentTurn] + 1 > highScore[1]) {
@@ -122,7 +123,7 @@ export default function App() {
   //highlight winning pattern
   let resetColor;
   const highlight = (array, color, timeDelay) => {
-    clearTimeout(resetColor);
+    
     for (let point of array) {
       document.getElementById(point.replaceAll(",","")).style.backgroundColor = color;
     }
@@ -176,7 +177,6 @@ export default function App() {
 
 
   const handleClick = (z,x,y,currentTurn) => {
-    //highlight([`${z},${x},${y}`],"gold",500);
     let win;
     
     const newGrid = grid;
@@ -185,6 +185,7 @@ export default function App() {
     if (checkWin(newGrid, [z,x,y], currentTurn)) {
       return;
     }
+    highlight([`${z},${x},${y}`],"gold",500);
 
     if (moves == 26) {
       setWinner("It's a tie!")
@@ -202,7 +203,9 @@ export default function App() {
         newGrid[zz][xx][yy] = "O"
         highlight([`${zz},${xx},${yy}`],"gold",500);
         setGrid(newGrid)
+        
         if (checkWin(newGrid, [zz,xx,yy], "O")) {
+          setGrid(newGrid)
           return;
         }
       } else {
@@ -248,6 +251,7 @@ export default function App() {
     </div>
 
     <div className='center'>
+      <p className="turn">{ winner ? `${winner}` : `${turn}'s Turn`}</p>
 
     <div className='board-wrapper'>
     <div className="board">
