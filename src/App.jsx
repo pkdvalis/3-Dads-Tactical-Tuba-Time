@@ -91,7 +91,7 @@ export default function App() {
   const [oplayer, setOplayer] = useState(true)
   const [score, setScore] = useState({X: 0, O: 0});
   const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
-  const [animOn, setAnimOn] = useState("")
+
 
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
@@ -106,7 +106,7 @@ export default function App() {
         }
 
         if (win) {
-          setAnimOn("anim")
+          
           clearTimeout(resetColor);
           setWinner(`${currentTurn} has won!`)
           setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
@@ -226,7 +226,7 @@ export default function App() {
   
   <div id="game">
     <div className="sidebar">
-    <div id="computer" className={animOn}>
+    <div id="computer">
       <p>3Dads Tactical Tuba Time</p>
       <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
       <p>Score <br />X: {score['X']} <br />O: {score['O']}</p>

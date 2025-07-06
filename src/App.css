@@ -1,15 +1,3 @@
-root {
-  --nyanza: #d8f3dcff;
-  --celadon: #b7e4c7ff;
-  --celadon-2: #95d5b2ff;
-  --mint: #74c69dff;
-  --mint-2: #52b788ff;
-  --sea-green: #40916cff;
-  --dartmouth-green: #2d6a4fff;
-  --brunswick-green: #1b4332ff;
-  --dark-green: #081c15ff;
-}
-
 html,
 body {
   height: 100%;
@@ -17,47 +5,9 @@ body {
   background: rgb(117, 126, 129);
 }
 
-@keyframes greenanim {
-  0% {
-    background-color: var(--nyanza);
-  }
-  12.5% {
-    background-color: var(--celadon);
-  }
-  25% {
-    background-color: var(--celadon-2);
-  }
-  37.5% {
-    background-color: var(--mint);
-  }
-  50% {
-    background-color: var(--mint-2);
-  }
-  62.5% {
-    background-color: var(--sea-green);
-  }
-  75% {
-    background-color: var(--dartmouth-green);
-  }
-  87.5% {
-    background-color: var(--brunswick-green);
-  }
-  100% {
-    background-color: var(--dark-green);
-  }
-}
-
 #computer {
-  background-color: blue;
   font-size: 1.5rem;
   z-index: 100;
-}
-
-.anim {
-  animation-name: greenanim;
-  animation-duration: 8s;
-  animation-iteration-count: infinite;
-  background-color: rgb(117, 126, 129);
 }
 
 .turn {
