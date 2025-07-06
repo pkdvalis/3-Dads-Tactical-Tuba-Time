@@ -22,11 +22,10 @@ body {
 
 #game {
   position: fixed;
-  width: 75%;
-  height: 100%;
+  width: 75vw;
+  height: 100vh;
   left: 0;
   top: 0;
-
   z-index: 10;
 
   display: flex;
@@ -60,7 +59,7 @@ body {
   grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
   grid-template-rows: repeat(3, 1fr); /* 3 equal rows */
   gap: 5px;
-  width: 400px;
+  width: min(70vw, 400px);
   height: 200px;
   transform: rotateX(50deg); /* Tilt the board backward */
   transform-origin: top center;
@@ -68,6 +67,8 @@ body {
 }
 
 button {
+  color: black;
+  background-color: white;
   width: 100%;
   height: 100%;
   font-size: 2rem;

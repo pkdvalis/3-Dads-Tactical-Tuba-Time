@@ -92,6 +92,7 @@ export default function App() {
   const [score, setScore] = useState({X: 0, O: 0});
   const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
 
+
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
     console.log("newGrid",newGrid)
@@ -105,6 +106,7 @@ export default function App() {
         }
 
         if (win) {
+          
           clearTimeout(resetColor);
           setWinner(`${currentTurn} has won!`)
           setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
@@ -293,11 +295,6 @@ export default function App() {
             onClick={(e) => {
               if (e.target.innerText != "") return;
               if (winner) return;
-              handleClick(1,x,y,turn);
-             
-                
-             
-              
               }}
               key={"1"+x+y} 
               id={"1"+x+y}
