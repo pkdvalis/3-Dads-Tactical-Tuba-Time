@@ -304,7 +304,7 @@ export default function App() {
 
     <div className='center'>
       <div className="turn">
-      <p>3Dads Tactical Tuba Time</p>
+      <p>3x3x3</p>
         <p>{ winner ? `${winner}` : `${turn}'s Turn`}</p>
         </div>
 
