@@ -295,6 +295,7 @@ export default function App() {
             onClick={(e) => {
               if (e.target.innerText != "") return;
               if (winner) return;
+              handleClick(1,x,y,turn);
               }}
               key={"1"+x+y} 
               id={"1"+x+y}
