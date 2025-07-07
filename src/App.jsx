@@ -91,7 +91,7 @@ export default function App() {
   const [oplayer, setOplayer] = useState(true)
   const [score, setScore] = useState({X: 0, O: 0});
   const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
-
+  const [difficulty, setDifficulty] = useState("Easy");
 
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
@@ -139,6 +139,43 @@ export default function App() {
   }
 
   const computerMove = (point, newGrid) => {
+    if (difficulty == "Hard") {
+        //make db of patterns
+      let possibleMoves = [];
+      for (let pattern of winningPatterns) {
+        
+          //count 0s it has
+          let num = 0;
+          for (let array of pattern) {
+            let [zz,xx,yy] = array.split(",")
+            if (newGrid[zz][xx][yy] == "O") {
+              num++;
+            }
+          }
+          //store it if it has 2 "O"s
+          console.log(num,pattern)
+          if (num == 2) {
+            possibleMoves.push([pattern])
+          }
+          
+        }
+        console.log(possibleMoves)
+          
+          
+          //Return a free space in the pattern
+          for (let i = possibleMoves.length - 1; i >= 0; i--) {
+            for (let pattern of possibleMoves[i]) {
+              for (let array of pattern) {
+                let [zz,xx,yy] = array.split(",")
+                  if (newGrid[zz][xx][yy] == "") {
+                    return [zz,xx,yy];
+                  }
+            }
+          }
+        }
+    }
+
+
 
     //make db of patterns
     let possibleMoves = [[[],0]];
@@ -227,7 +264,7 @@ export default function App() {
   <div id="game">
     <div className="sidebar">
     <div id="computer">
-      <p>3Dads Tactical Tuba Time</p>
+      
       <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
       <p>Score <br />X: {score['X']} <br />O: {score['O']}</p>
       Computer controls:
@@ -249,11 +286,20 @@ export default function App() {
     }}
     id="resetHs">Reset High Score</button>
 </p>
+<p>
+    <button onClick={() => {
+      setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
+    }}
+    id="resetHs">Difficulty: {difficulty}</button>
+</p>
 
     </div>
 
     <div className='center'>
-      <p className="turn">{ winner ? `${winner}` : `${turn}'s Turn`}</p>
+      <div className="turn">
+      <p>3Dads Tactical Tuba Time</p>
+        <p>{ winner ? `${winner}` : `${turn}'s Turn`}</p>
+        </div>
 
     <div className='board-wrapper'>
     <div className="board">

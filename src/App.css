@@ -3,15 +3,16 @@ body {
   height: 100%;
   margin: 0;
   background: rgb(117, 126, 129);
+  font-size: 1rem;
 }
 
 #computer {
-  font-size: 1.5rem;
+  font-size: 2rem;
   z-index: 100;
 }
 
 .turn {
-  font-size: 1.5rem;
+  font-size: 3rem;
   z-index: 100;
 }
 
