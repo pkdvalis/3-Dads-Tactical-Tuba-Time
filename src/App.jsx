@@ -95,7 +95,7 @@ export default function App() {
 
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
-    console.log("newGrid",newGrid)
+    
     for (let pattern of winningPatterns) {
       
       if (pattern.includes(previousMove.toString())) {
@@ -153,21 +153,20 @@ export default function App() {
             }
           }
           //store it if it has 2 "O"s
-          console.log(num,pattern)
+        
           if (num == 2) {
             possibleMoves.push([pattern])
           }
           
         }
-        console.log(possibleMoves)
-          
-          
+        
           //Return a free space in the pattern
           for (let i = possibleMoves.length - 1; i >= 0; i--) {
             for (let pattern of possibleMoves[i]) {
               for (let array of pattern) {
                 let [zz,xx,yy] = array.split(",")
                   if (newGrid[zz][xx][yy] == "") {
+                    console.log("hard return",[zz,xx,yy])
                     return [zz,xx,yy];
                   }
             }
@@ -179,6 +178,7 @@ export default function App() {
 
     //make db of patterns
     let possibleMoves = [[[],0]];
+    
     for (let pattern of winningPatterns) {
       
         //count Xs it has
@@ -190,20 +190,24 @@ export default function App() {
           }
         }
         //store it if it's biggest
-        if (num >= possibleMoves[possibleMoves.length-1][1] && num > 0) {
+        console.log(num,possibleMoves[possibleMoves.length-1][1])
+        if (num > 0) {
           possibleMoves.push([pattern,num])
         }
         
       }
-        possibleMoves.shift()
-        
+      
+      possibleMoves.sort((a, b) => a[1] - b[1]);
+              
         //Return a free space in the pattern
         for (let i = possibleMoves.length - 1; i >= 0; i--) {
           for (let pattern of possibleMoves[i]) {
             if (!Array.isArray(pattern)) continue;
-              for (let array of pattern) {
+            for (let array of pattern) {
+                
               let [zz,xx,yy] = array.split(",")
                 if (newGrid[zz][xx][yy] == "") {
+                  console.log("easy return",[zz,xx,yy])
                   return [zz,xx,yy];
                 }
           }
