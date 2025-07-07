@@ -52,6 +52,7 @@ body {
 .board-wrapper {
   perspective: 450px; /* lower more extreme*/
   transform-style: preserve-3d;
+  border: 5px solid red;
 }
 
 .board {
@@ -65,6 +66,7 @@ body {
   transform: rotateX(50deg); /* Tilt the board backward */
   transform-origin: top center;
   box-shadow: 0px 5px 1px rgba(117, 116, 97, 0.5);
+  border: 5px solid blue;
 }
 
 button {
