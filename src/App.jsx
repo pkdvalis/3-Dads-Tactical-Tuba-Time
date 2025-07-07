@@ -140,6 +140,9 @@ export default function App() {
 
   const computerMove = (point, newGrid) => {
     if (difficulty == "Hard") {
+      if (newGrid[1][1][1] == "") {
+        return [1,1,1];
+      } 
         //make db of patterns
       let possibleMoves = [];
       for (let pattern of winningPatterns) {
