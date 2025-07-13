@@ -52,7 +52,8 @@ body {
 .board-wrapper {
   perspective: 450px; /* lower more extreme*/
   transform-style: preserve-3d;
-  border: 5px solid red;
+  border: 0px;
+  height: min(40vw, 200px);
 }
 
 .board {
@@ -61,12 +62,12 @@ body {
   grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
   grid-template-rows: repeat(3, 1fr); /* 3 equal rows */
   gap: 5px;
-  width: min(70vw, 400px);
+  width: min(60vw, 400px);
   height: 200px;
   transform: rotateX(50deg); /* Tilt the board backward */
   transform-origin: top center;
   box-shadow: 0px 5px 1px rgba(117, 116, 97, 0.5);
-  border: 5px solid blue;
+  /*border: 5px solid blue;*/
 }
 
 button {
@@ -122,4 +123,96 @@ button:active {
   box-sizing: border-box;
   transform: translateZ(20px);
   box-shadow: 0px 5px 0px rgba(31, 31, 31, 0.75);
+}
+
+@media only screen and (max-width: 600px) {
+  /*
+  * {
+    border: 2px solid pink;
+  }
+  */
+
+  #game {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-wrap: wrap;
+  }
+  /*
+  #title {
+    display: none;
+  }
+  */
+
+  .turn {
+    font-size: 1em;
+  }
+
+  .board-wrapper {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+  }
+
+  .board {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    gap: 4px;
+  }
+
+  .sidebar {
+    flex: 1;
+    display: flex;
+    padding: 0px;
+    margin: 0px;
+    width: 100vw;
+    justify-content: center;
+    font-size: 1em;
+  }
+  #highscore {
+    display: none;
+    flex: 0;
+  }
+  #oplayer {
+    flex: 0;
+  }
+
+  .center {
+    flex: 0;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    height: 100%;
+    justify-content: center;
+  }
+
+  #computer {
+    font-size: 1em;
+    z-index: 100;
+  }
+
+  button {
+    width: 100%;
+    height: 0%;
+    font-size: 1rem;
+  }
+
+  #reset {
+    width: 100%;
+    height: 0%;
+    font-size: 1rem;
+  }
+
+  #resetHs {
+    width: 100%;
+    height: 0%;
+    font-size: 1rem;
+  }
 }

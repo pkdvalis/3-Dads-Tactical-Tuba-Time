@@ -272,21 +272,21 @@ export default function App() {
     <div className="sidebar">
     <div id="computer">
       
-      <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
-      <p>Score <br />X: {score['X']} <br />O: {score['O']}</p>
-      Computer controls:
-     
-      <label htmlFor="oplayer"> O</label>
+      <p id="highscore">High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
+      <p>Score X: {score['X']} O: {score['O']}</p>
+      <label htmlFor="oplayer">Computer controls O:</label>
       <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
-    </div>
-<p>    <button onClick={() => {
+      <p>    <button onClick={() => {
       setMoves(0)
       setWinner(false)
       setGrid(initialGrid);
       setTurn("X");
       return;
     }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
-</p><p>
+</p>
+    </div>
+    <div id="buttons">
+<p>
     <button onClick={() => {
       localStorage.removeItem('highScore')
       setHighScore(['X',0])
@@ -299,13 +299,13 @@ export default function App() {
     }}
     id="resetHs">Difficulty: {difficulty}</button>
 </p>
+</div>
 
     </div>
 
     <div className='center'>
       <div className="turn">
-      <p>3x3x3</p>
-        <p>{ winner ? `${winner}` : `${turn}'s Turn`}</p>
+        { winner ? `${winner}` : `${turn}'s Turn`}
         </div>
 
     <div className='board-wrapper'>
