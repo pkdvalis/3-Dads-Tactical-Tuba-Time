@@ -276,17 +276,11 @@ export default function App() {
       <p>Score X: {score['X']} O: {score['O']}</p>
       <label htmlFor="oplayer">Computer controls O:</label>
       <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
-      <p>    <button onClick={() => {
-      setMoves(0)
-      setWinner(false)
-      setGrid(initialGrid);
-      setTurn("X");
-      return;
-    }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
-</p>
+      
     </div>
     <div id="buttons">
-<p>
+
+<p id="resetHsBtnContainer">
     <button onClick={() => {
       localStorage.removeItem('highScore')
       setHighScore(['X',0])
@@ -298,6 +292,14 @@ export default function App() {
       setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
     }}
     id="resetHs">Difficulty: {difficulty}</button>
+</p>
+<p><button onClick={() => {
+      setMoves(0)
+      setWinner(false)
+      setGrid(initialGrid);
+      setTurn("X");
+      return;
+    }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
 </p>
 </div>
 

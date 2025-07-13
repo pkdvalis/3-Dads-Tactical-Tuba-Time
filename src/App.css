@@ -167,7 +167,7 @@ button:active {
   }
 
   .sidebar {
-    flex: 1;
+    flex: 100%;
     display: flex;
     padding: 0px;
     margin: 0px;
@@ -175,10 +175,16 @@ button:active {
     justify-content: center;
     font-size: 1em;
   }
+
   #highscore {
     display: none;
     flex: 0;
   }
+
+  #resetHsBtnContainer {
+    display: none;
+  }
+
   #oplayer {
     flex: 0;
   }
