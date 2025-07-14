@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import './App.css'
 import Level from './Level.jsx';
-import sword from './assets/sword.png';
-import dragon from './assets/dragon.png';
-import blank from './assets/blank.png';
-
-
 
 const winningPatterns = [
   // Horizontal rows in each layer (XY plane)
@@ -76,23 +71,7 @@ const winningPatterns = [
 
 export default function App() {
   const [size, setSize] = useState(3);
-  const initialGrid = [
-    [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ],
-    [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ],
-    [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ],
-  ]; //Array(size).fill(Array(size).fill(Array(size).fill("")));
+  const initialGrid = Array.from({length: size}, e => Array.from({length: size}, e => Array(size).fill("")));
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
@@ -300,88 +279,78 @@ export default function App() {
           setHighScore(['X',0])
         }}
         >Reset High Score</button>
-        </p>
+      </p>
 
-        <p>
-    <button onClick={() => {
-      setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
-    }}
-    >Difficulty: {difficulty}</button>
-    <p>
-    <button onClick={() => {
-      setShowOptions(prev => !prev)
-    }}
-    >Exit Options</button>
-</p>
-  </p>
-  
+      <p>
+        <button onClick={() => {
+        setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
+        }}
+        >Difficulty: {difficulty}</button>
+        </p>
+      <p>
+        <button onClick={() => {
+        setShowOptions(prev => !prev)
+        }}
+        >Exit Options</button>
+      </p>
     </div>
 
     <div className="sidebar">
-    <div id="computer">
+      <div id="computer">
       
-      <p id="highscore">High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
-      <p>Score X: {score['X']} O: {score['O']}</p>
-      <div id="computerControls">
-        <label htmlFor="oplayer">Computer controls O:</label>
-        <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+        <p id="highscore">High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
+        <p>Score X: {score['X']} O: {score['O']}</p>
+        <div id="computerControls">
+          <label htmlFor="oplayer">Computer controls O:</label>
+          <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+        </div>
       </div>
-      
-      
+    
+      <div id="buttons">
+
+        <p id="resetHsBtnContainer">
+            <button onClick={() => {
+              localStorage.removeItem('highScore')
+              setHighScore(['X',0])
+            }}
+            id="resetHs">Reset High Score</button>
+        </p>
+        <p>
+            <button onClick={() => {
+              setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
+            }}
+            id="difficultyBtn">Difficulty: {difficulty}</button>
+        </p>
+
+        <p>
+            <button onClick={() => {
+              setShowOptions(prev => !prev)
+            }}
+            id="optionsBtn">Options</button>
+        </p>
+
+        <p>
+          <button onClick={() => {
+              setMoves(0)
+              setWinner(false)
+              setGrid(initialGrid);
+              setTurn("X");
+              return;
+            }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
+        </p>
+      </div>
+
     </div>
-    <div id="buttons">
 
-<p id="resetHsBtnContainer">
-    <button onClick={() => {
-      localStorage.removeItem('highScore')
-      setHighScore(['X',0])
-    }}
-    id="resetHs">Reset High Score</button>
-</p>
-<p>
-    <button onClick={() => {
-      setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
-    }}
-    id="difficultyBtn">Difficulty: {difficulty}</button>
-</p>
-
-<p>
-    <button onClick={() => {
-      setShowOptions(prev => !prev)
-    }}
-    id="optionsBtn">Options</button>
-</p>
-
-<p><button onClick={() => {
-      setMoves(0)
-      setWinner(false)
-      setGrid(initialGrid);
-      setTurn("X");
-      return;
-    }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
-</p>
-</div>
-
-    </div>
-
-    <div className='center'>
-      <div className="turn">
+  <div className='center'>
+    <div className="turn">
         { winner ? `${winner}` : `${turn}'s Turn`}
         </div>
 
     {
     grid.map((level,index) => <Level gridLevel={level} level={index} winner={winner} handleClick={handleClick} turn={turn} />)
     }
-        
-
-    
-    
-      </div>
-    </div>
-    
-    
-    
-    
-  )
-
-}
+      
+  </div>
+</div>
+)}
