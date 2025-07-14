@@ -7,7 +7,7 @@ body {
 }
 
 #computer {
-  font-size: 2em;
+  font-size: 1.5em;
   z-index: 100;
 }
 
@@ -23,11 +23,11 @@ body {
 
 #game {
   position: fixed;
-  width: 75vw;
+  width: 100vw;
   height: 100vh;
   left: 0;
   top: 0;
-  z-index: 10;
+  z-index: 5;
 
   display: flex;
   flex-direction: row;
@@ -73,9 +73,9 @@ body {
 button {
   color: black;
   background-color: white;
-  width: 100%;
+  width: 190px;
   height: 100%;
-  font-size: 2rem;
+  font-size: 1rem;
   cursor: pointer;
   border-radius: 0 !important;
   transition: 0.2s;
@@ -98,14 +98,16 @@ button:active {
 
 #reset {
   height: 95px;
-  width: 190px;
   font-size: 1.5rem;
 }
 
 #resetHs {
   height: 50px;
-  width: 190px;
   font-size: 1rem;
+}
+
+#optionsBtn {
+  display: none;
 }
 
 .square {
@@ -172,7 +174,7 @@ button:active {
     padding: 0px;
     margin: 0px;
     width: 100vw;
-    justify-content: center;
+    justify-content: space-around;
     font-size: 1em;
   }
 
@@ -180,13 +182,19 @@ button:active {
     display: none;
     flex: 0;
   }
-
+  #optionsBtn {
+    display: block;
+  }
   #resetHsBtnContainer {
     display: none;
   }
 
   #oplayer {
     flex: 0;
+  }
+
+  #computerControls {
+    display: none;
   }
 
   .center {
@@ -200,12 +208,12 @@ button:active {
   }
 
   #computer {
-    font-size: 1em;
+    font-size: 1.5em;
     z-index: 100;
   }
 
   button {
-    width: 100%;
+    width: 155.15px;
     height: 0%;
     font-size: 1rem;
   }
@@ -220,5 +228,17 @@ button:active {
     width: 100%;
     height: 0%;
     font-size: 1rem;
+  }
+
+  #optionsModal {
+    display: none;
+    background-color: bisque;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+
+  #difficultyBtn {
+    display: none;
   }
 }

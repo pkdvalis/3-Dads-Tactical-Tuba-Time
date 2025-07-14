@@ -92,6 +92,7 @@ export default function App() {
   const [score, setScore] = useState({X: 0, O: 0});
   const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
   const [difficulty, setDifficulty] = useState("Easy");
+  const [showOptions, setShowOptions] = useState(false);
 
   
   const checkWin = (newGrid, previousMove, currentTurn) => {
@@ -269,13 +270,44 @@ export default function App() {
     
   
   <div id="game">
+
+    <div id="optionsModal" style={{display: showOptions? 'block' : 'none'}}>
+      <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
+      <label htmlFor="oplayer">Computer controls O:</label>
+      <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+      <p>
+        <button onClick={() => {
+          localStorage.removeItem('highScore')
+          setHighScore(['X',0])
+        }}
+        >Reset High Score</button>
+        </p>
+
+        <p>
+    <button onClick={() => {
+      setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
+    }}
+    >Difficulty: {difficulty}</button>
+    <p>
+    <button onClick={() => {
+      setShowOptions(prev => !prev)
+    }}
+    >Exit Options</button>
+</p>
+  </p>
+  
+    </div>
+
     <div className="sidebar">
     <div id="computer">
       
       <p id="highscore">High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
       <p>Score X: {score['X']} O: {score['O']}</p>
-      <label htmlFor="oplayer">Computer controls O:</label>
-      <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+      <div id="computerControls">
+        <label htmlFor="oplayer">Computer controls O:</label>
+        <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+      </div>
+      
       
     </div>
     <div id="buttons">
@@ -291,8 +323,16 @@ export default function App() {
     <button onClick={() => {
       setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
     }}
-    id="resetHs">Difficulty: {difficulty}</button>
+    id="difficultyBtn">Difficulty: {difficulty}</button>
 </p>
+
+<p>
+    <button onClick={() => {
+      setShowOptions(prev => !prev)
+    }}
+    id="optionsBtn">Options</button>
+</p>
+
 <p><button onClick={() => {
       setMoves(0)
       setWinner(false)
