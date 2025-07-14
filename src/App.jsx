@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css'
-import sword from './assets/sword.jpeg';
-import dragon from './assets/dragon.jpeg';
+import sword from './assets/sword.png';
+import dragon from './assets/dragon.png';
 import blank from './assets/blank.jpeg';
 
 
@@ -378,7 +378,8 @@ export default function App() {
               }}
             key={"0"+x+y} 
             id={"0"+x+y}
-            className="square">{square}</button>
+            style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`}}
+            className="square"></button>
 
           })
         })
@@ -406,8 +407,8 @@ export default function App() {
               }}
               key={"1"+x+y} 
               id={"1"+x+y}
-              style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`, backgroundSize: 'contain'}}
-              className="square">{square}</button>
+              style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`}}
+              className="square"></button>
 
           })
         })
@@ -436,7 +437,8 @@ export default function App() {
 
               key={"2"+x+y} 
               id={"2"+x+y}
-            className="square">{square}</button>
+              style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`}}
+              className="square"></button>
 
           })
         })
