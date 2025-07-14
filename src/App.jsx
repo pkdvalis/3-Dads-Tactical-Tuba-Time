@@ -378,8 +378,7 @@ export default function App() {
               }}
             key={"0"+x+y} 
             id={"0"+x+y}
-            style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`}}
-            className="square"></button>
+            className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
 
           })
         })
@@ -407,8 +406,7 @@ export default function App() {
               }}
               key={"1"+x+y} 
               id={"1"+x+y}
-              style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`}}
-              className="square"></button>
+              className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
 
           })
         })
@@ -437,8 +435,7 @@ export default function App() {
 
               key={"2"+x+y} 
               id={"2"+x+y}
-              style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`}}
-              className="square"></button>
+              className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
 
           })
         })
