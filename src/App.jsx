@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css'
 import sword from './assets/sword.png';
 import dragon from './assets/dragon.png';
-import blank from './assets/blank.jpeg';
+import blank from './assets/blank.png';
 
 
 
