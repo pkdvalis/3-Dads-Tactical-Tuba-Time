@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import './App.css'
+import sword from './assets/sword.jpeg';
+import dragon from './assets/dragon.jpeg';
+import blank from './assets/blank.jpeg';
+
+
 
 const winningPatterns = [
   // Horizontal rows in each layer (XY plane)
@@ -226,14 +231,19 @@ export default function App() {
   const handleClick = (z,x,y,currentTurn) => {
     let win;
     
+    //update the board
     const newGrid = grid;
     newGrid[z][x][y] = turn;
     setGrid(newGrid)
+    //check for a win
     if (checkWin(newGrid, [z,x,y], currentTurn)) {
       return;
     }
+    
+    //highlight the new move
     highlight([`${z},${x},${y}`],"gold",500);
 
+    //never tested this...
     if (moves == 26) {
       setWinner("It's a tie!")
       return;
@@ -270,6 +280,7 @@ export default function App() {
     
   
   <div id="game">
+    
 
     <div id="optionsModal" style={{display: showOptions? 'block' : 'none'}}>
       <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
@@ -385,6 +396,7 @@ export default function App() {
         grid[1].map((row,x) => {
           return row.map((square, y) => {
             
+            
           
           return <button 
             onClick={(e) => {
@@ -394,7 +406,8 @@ export default function App() {
               }}
               key={"1"+x+y} 
               id={"1"+x+y}
-            className="square">{square}</button>
+              style={{background: `url(${square == 'X'? sword : square == "O" ? dragon : blank})`, backgroundSize: 'contain'}}
+              className="square">{square}</button>
 
           })
         })
