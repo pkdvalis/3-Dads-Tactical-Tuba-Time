@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css'
+import Level from './Level.jsx';
 import sword from './assets/sword.png';
 import dragon from './assets/dragon.png';
 import blank from './assets/blank.png';
@@ -71,24 +72,27 @@ const winningPatterns = [
   ["0,2,2","1,1,1","2,0,0"]
 ];
 
+
+
 export default function App() {
+  const [size, setSize] = useState(3);
   const initialGrid = [
-  [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""]
-      ],
-  [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""]
-      ],
-  [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""]
-      ],
-    ];
+    [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ],
+    [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ],
+    [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ],
+  ]; //Array(size).fill(Array(size).fill(Array(size).fill("")));
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
@@ -229,11 +233,15 @@ export default function App() {
 
 
   const handleClick = (z,x,y,currentTurn) => {
+    console.log(z,x,y,currentTurn)
+    console.log(grid[z][x][y])
     let win;
     
     //update the board
-    const newGrid = grid;
+    const newGrid = [...grid];
+    console.log(newGrid[z][x][y])
     newGrid[z][x][y] = turn;
+    console.log(newGrid[z][x][y])
     setGrid(newGrid)
     //check for a win
     if (checkWin(newGrid, [z,x,y], currentTurn)) {
@@ -361,91 +369,12 @@ export default function App() {
         { winner ? `${winner}` : `${turn}'s Turn`}
         </div>
 
-    <div className='board-wrapper'>
-    <div className="board">
+    {
+    grid.map((level,index) => <Level gridLevel={level} level={index} winner={winner} handleClick={handleClick} turn={turn} />)
+    }
+        
 
-      {
-        grid[0].map((row,x) => {
-          return row.map((square, y) => {
-            
-          
-          return <button 
-            onClick={(e) => {
-              if (e.target.innerText != "") return;
-              if (winner) return;
-              handleClick(0,x,y,turn);
-              
-              }}
-            key={"0"+x+y} 
-            id={"0"+x+y}
-            className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
-
-          })
-        })
-
-      }
-      
-  
-    </div>
-    </div>
-
-    <div className='board-wrapper'>
-    <div className="board">
-
-      {
-        grid[1].map((row,x) => {
-          return row.map((square, y) => {
-            
-            
-          
-          return <button 
-            onClick={(e) => {
-              if (e.target.innerText != "") return;
-              if (winner) return;
-              handleClick(1,x,y,turn);
-              }}
-              key={"1"+x+y} 
-              id={"1"+x+y}
-              className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
-
-          })
-        })
-
-      }
-      
-  
-    </div>
-    </div>
-
-    <div className='board-wrapper'>
-    <div className="board">
-
-      {
-        grid[2].map((row,x) => {
-          return row.map((square, y) => {
-            
-          
-          return <button 
-            onClick={(e) => {
-              if (e.target.innerText != "") return;
-              
-              if (winner) return;
-              handleClick(2,x,y,turn);
-              }}
-
-              key={"2"+x+y} 
-              id={"2"+x+y}
-              className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
-
-          })
-        })
-
-      }
-      
-  
-    </div>
-    </div>
-
+    
     
       </div>
     </div>
