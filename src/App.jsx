@@ -70,8 +70,10 @@ const winningPatterns = [
 
 
 export default function App() {
+  const sizes = [3,4,5]
   const [size, setSize] = useState(3);
   const initialGrid = Array.from({length: size}, e => Array.from({length: size}, e => Array(size).fill("")));
+  console.log(initialGrid)
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
@@ -315,6 +317,22 @@ export default function App() {
             }}
             id="resetHs">Reset High Score</button>
         </p>
+
+        <p id="sizeBtnContainer">
+            <button onClick={() => {
+              setSize(prev => {
+                let i = sizes.indexOf(prev);
+                let newSize = sizes[(i + 1) % sizes.length]
+                document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
+                document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
+                return newSize;
+                });
+                
+
+            }}
+            id="sizeBtn">{size} x {size} x {size}</button>
+        </p>
+
         <p>
             <button onClick={() => {
               setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
@@ -348,7 +366,7 @@ export default function App() {
         </div>
 
     {
-    grid.map((level,index) => <Level gridLevel={level} level={index} winner={winner} handleClick={handleClick} turn={turn} />)
+    grid.map((level,index) => <Level gridLevel={level} level={index} winner={winner} handleClick={handleClick} turn={turn} size={size} />)
     }
       
   </div>
