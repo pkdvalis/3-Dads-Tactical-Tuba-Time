@@ -1,6 +1,50 @@
 import { useState } from 'react';
 import './App.css'
 import Level from './Level.jsx';
+import s01 from './assets/sword01.mp3';
+import s02 from './assets/sword02.mp3';
+import s03 from './assets/sword03.mp3';
+import s04 from './assets/sword04.mp3';
+import s05 from './assets/sword05.mp3';
+import s06 from './assets/sword06.mp3';
+import s07 from './assets/sword07.mp3';
+import s08 from './assets/sword08.mp3';
+import s09 from './assets/sword09.mp3';
+import d01 from './assets/dragon01.mp3';
+import d02 from './assets/dragon02.mp3';
+import d03 from './assets/dragon03.mp3';
+import d04 from './assets/dragon04.mp3';
+import d05 from './assets/dragon05.mp3';
+import d06 from './assets/dragon06.mp3';
+
+const dragonSfx = [d01, d02, d03, d04, d05, d06];
+const swordSfx = [s01, s02, s03, s04, s05, s06, s07, s08, s09];
+
+const preloadedSwordSfx = swordSfx.map(src => {
+  const audio = new Audio(src);
+  audio.preload = 'auto';
+  audio.load();
+  return audio;
+});
+
+// Preload dragon sounds
+const preloadedDragonSfx = dragonSfx.map(src => {
+  const audio = new Audio(src);
+  audio.preload = 'auto';
+  audio.load();
+  return audio;
+});
+
+const randomSwordSound = () => {
+  const random = Math.floor(Math.random() * preloadedSwordSfx.length);
+  return preloadedSwordSfx[random];
+};
+
+const randomDragonSound = () => {
+  const random = Math.floor(Math.random() * preloadedDragonSfx.length);
+  return preloadedDragonSfx[random];
+};
+
 
 const winningPatterns = [
   // Horizontal rows in each layer (XY plane)
@@ -73,7 +117,7 @@ export default function App() {
   const sizes = [3,4,5]
   const [size, setSize] = useState(3);
   const initialGrid = Array.from({length: size}, e => Array.from({length: size}, e => Array(size).fill("")));
-  console.log(initialGrid)
+  const [sound, setSound] = useState(false);
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
@@ -84,9 +128,15 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
 
-  
   const checkWin = (newGrid, previousMove, currentTurn) => {
-    
+    if (sound) {
+      if (currentTurn == "X") {
+        randomSwordSound().play();
+      } else {
+        randomDragonSound().play();
+      }
+    }
+   
     for (let pattern of winningPatterns) {
       
       if (pattern.includes(previousMove.toString())) {
@@ -160,7 +210,7 @@ export default function App() {
               for (let array of pattern) {
                 let [zz,xx,yy] = array.split(",")
                   if (newGrid[zz][xx][yy] == "") {
-                    console.log("hard return",[zz,xx,yy])
+                    
                     return [zz,xx,yy];
                   }
             }
@@ -184,7 +234,6 @@ export default function App() {
           }
         }
         //store it if it's biggest
-        console.log(num,possibleMoves[possibleMoves.length-1][1])
         if (num > 0) {
           possibleMoves.push([pattern,num])
         }
@@ -201,7 +250,6 @@ export default function App() {
                 
               let [zz,xx,yy] = array.split(",")
                 if (newGrid[zz][xx][yy] == "") {
-                  console.log("easy return",[zz,xx,yy])
                   return [zz,xx,yy];
                 }
           }
@@ -214,15 +262,13 @@ export default function App() {
 
 
   const handleClick = (z,x,y,currentTurn) => {
-    console.log(z,x,y,currentTurn)
-    console.log(grid[z][x][y])
-    let win;
+   let win;
     
     //update the board
     const newGrid = [...grid];
-    console.log(newGrid[z][x][y])
+    
     newGrid[z][x][y] = turn;
-    console.log(newGrid[z][x][y])
+    
     setGrid(newGrid)
     //check for a win
     if (checkWin(newGrid, [z,x,y], currentTurn)) {
@@ -274,7 +320,9 @@ export default function App() {
     <div id="optionsModal" style={{display: showOptions? 'block' : 'none'}}>
       <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
       <label htmlFor="oplayer">Computer controls O:</label>
-      <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+      <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
+      <label htmlFor="soundcheck">Sound:</label>
+      <input type="checkbox" id="soundcheck" name="soundcheck" checked={sound} onChange={() => setSound(!sound)} />
       <p>
         <button onClick={() => {
           localStorage.removeItem('highScore')
@@ -288,6 +336,20 @@ export default function App() {
         setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
         }}
         >Difficulty: {difficulty}</button>
+        </p>
+        <p>
+            <button onClick={() => {
+              setSize(prev => {
+                let i = sizes.indexOf(prev);
+                let newSize = sizes[(i + 1) % sizes.length]
+                document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
+                document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
+                return newSize;
+                });
+                
+
+            }}
+            id="sizeBtn">{size} x {size} x {size}</button>
         </p>
       <p>
         <button onClick={() => {
@@ -304,7 +366,9 @@ export default function App() {
         <p>Score X: {score['X']} O: {score['O']}</p>
         <div id="computerControls">
           <label htmlFor="oplayer">Computer controls O:</label>
-          <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} />
+          <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
+          <label htmlFor="soundcheck">Sound:</label>
+          <input type="checkbox" id="soundcheck" name="soundcheck" checked={sound} onChange={() => setSound(!sound)} />
         </div>
       </div>
     
@@ -368,6 +432,8 @@ export default function App() {
     {
     grid.map((level,index) => <Level gridLevel={level} level={index} winner={winner} handleClick={handleClick} turn={turn} size={size} />)
     }
+
+    
       
   </div>
 </div>

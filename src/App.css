@@ -16,7 +16,8 @@ body {
   z-index: 100;
 }
 
-#oplayer {
+#oplayer,
+#soundcheck {
   width: 25px;
   height: 25px;
 }
@@ -182,6 +183,11 @@ button:active {
     display: block;
     flex: 0;
   }
+
+  #sizeBtnContainer {
+    display: none;
+  }
+
   #optionsBtn {
     display: block;
   }
@@ -189,7 +195,8 @@ button:active {
     display: none;
   }
 
-  #oplayer {
+  #oplayer,
+  #soundcheck {
     flex: 0;
   }
 
