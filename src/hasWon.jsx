@@ -2,7 +2,7 @@ const hasWon = (array, square, turn) => {
     const [z,x,y] = square;
     const n = array.length;
     let pattern = [];
-
+    
     //check col
     for (let i=0; i < n; i++) {
         pattern.push([z,i,y]);
@@ -20,7 +20,6 @@ const hasWon = (array, square, turn) => {
         if(array[z][x][i] != turn)
             break;
         if(i == n-1){
-            console.log("row")
             return pattern;
         }
     }
@@ -33,7 +32,6 @@ const hasWon = (array, square, turn) => {
             if(array[z][i][i] != turn)
                 break;
             if(i == n-1){
-                console.log("diag")
                 return pattern;
             }
         }
@@ -47,7 +45,6 @@ const hasWon = (array, square, turn) => {
             if (array[z][i][(n-1)-i] != turn)
                 break;
             if(i == n-1){
-                console.log("anti-diag")
                 return pattern;
             }
         }
@@ -60,7 +57,6 @@ const hasWon = (array, square, turn) => {
         if(array[i][x][y] != turn)
             break;
         if(i == n-1){
-            console.log("vertical")
             return pattern;
         }
     }
@@ -73,7 +69,6 @@ const hasWon = (array, square, turn) => {
             if(array[i][x][i] != turn)
                 break;
             if(i == n-1){
-                console.log("vertical diag row")
                 return pattern;
             }
         }
@@ -87,7 +82,7 @@ const hasWon = (array, square, turn) => {
             if(array[i][x][(n-1)-i] != turn)
                 break;
             if(i == n-1){
-                console.log("vertical antidiag row")
+                
                 return pattern;
             }
         }
@@ -101,7 +96,7 @@ const hasWon = (array, square, turn) => {
             if(array[i][i][y] != turn)
                 break;
             if(i == n-1){
-                console.log("vertical diag col")
+               
                 return pattern;
             }
         }
@@ -115,7 +110,7 @@ const hasWon = (array, square, turn) => {
             if(array[i][(n-1)-i][y] != turn)
                 break;
             if(i == n-1){
-                console.log("vertical antidiag row")
+                
                 return pattern;
             }
         }
@@ -129,7 +124,7 @@ const hasWon = (array, square, turn) => {
             if(array[i][i][i] != turn)
                 break;
             if(i == n-1){
-                console.log("vertial corners diag")
+                
                 return pattern;
             }
         }
@@ -142,7 +137,6 @@ const hasWon = (array, square, turn) => {
             if(array[i][(n-1)-i][i] != turn)
                 break;
             if(i == n-1){
-                console.log("vertial corners diag")
                 return pattern;
             }
         }
@@ -155,7 +149,6 @@ const hasWon = (array, square, turn) => {
             if(array[i][(n-1)-i][(n-1)-i] != turn)
                 break;
             if(i == n-1){
-                console.log("vertial corners diag")
                 return pattern;
             }
         }
@@ -168,7 +161,6 @@ const hasWon = (array, square, turn) => {
             if(array[i][i][(n-1)-i] != turn)
                 break;
             if(i == n-1){
-                console.log("vertial corners diag")
                 return pattern;
             }
         }

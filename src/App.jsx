@@ -143,13 +143,10 @@ export default function App() {
   //highlight winning pattern
   let resetColor;
   const highlight = (array, color, timeDelay) => {
-    console.log(array)
+    
     for (let point of array) {
-      console.log(point)
+    
       let [z,x,y] = point;
-      console.log(z,x,y)
-      console.log(`${z}${x}${y}`)
-      console.log(document.getElementById(`${z}${x}${y}`))
       document.getElementById(`${z}${x}${y}`).style.backgroundColor = color;
     }
 
@@ -191,10 +188,11 @@ export default function App() {
           for (let i = possibleMoves.length - 1; i >= 0; i--) {
             for (let pattern of possibleMoves[i]) {
               for (let array of pattern) {
+                
                 let [zz,xx,yy] = array.split(",")
                   if (newGrid[zz][xx][yy] == "") {
                     
-                    return [zz,xx,yy];
+                    return [parseInt(zz),parseInt(xx),parseInt(yy)];
                   }
             }
           }
@@ -230,10 +228,11 @@ export default function App() {
           for (let pattern of possibleMoves[i]) {
             if (!Array.isArray(pattern)) continue;
             for (let array of pattern) {
-                
+              
               let [zz,xx,yy] = array.split(",")
                 if (newGrid[zz][xx][yy] == "") {
-                  return [zz,xx,yy];
+                  
+                  return [parseInt(zz),parseInt(xx),parseInt(yy)];
                 }
           }
         }
