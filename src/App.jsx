@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css'
 import Level from './Level.jsx';
+import hasWon from './hasWon.jsx';
 import s01 from './assets/sword01.mp3';
 import s02 from './assets/sword02.mp3';
 import s03 from './assets/sword03.mp3';
@@ -16,6 +17,8 @@ import d03 from './assets/dragon03.mp3';
 import d04 from './assets/dragon04.mp3';
 import d05 from './assets/dragon05.mp3';
 import d06 from './assets/dragon06.mp3';
+
+
 
 const dragonSfx = [d01, d02, d03, d04, d05, d06];
 const swordSfx = [s01, s02, s03, s04, s05, s06, s07, s08, s09];
@@ -44,7 +47,6 @@ const randomDragonSound = () => {
   const random = Math.floor(Math.random() * preloadedDragonSfx.length);
   return preloadedDragonSfx[random];
 };
-
 
 const winningPatterns = [
   // Horizontal rows in each layer (XY plane)
@@ -122,58 +124,39 @@ export default function App() {
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
   const [moves, setMoves] = useState(0)
-  const [oplayer, setOplayer] = useState(true)
+  const [oplayer, setOplayer] = useState(false)
   const [score, setScore] = useState({X: 0, O: 0});
   const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
 
-  const checkWin = (newGrid, previousMove, currentTurn) => {
+  const playSound = (player) => {
     if (sound) {
-      if (currentTurn == "X") {
+      if (player == "X") {
         randomSwordSound().play();
       } else {
         randomDragonSound().play();
       }
     }
-   
-    for (let pattern of winningPatterns) {
-      
-      if (pattern.includes(previousMove.toString())) {
-        let win = true;
-        for (let array of pattern) {
-          let [zz,xx,yy] = array.split(",")
-          if (newGrid[zz][xx][yy] != currentTurn) win = false;
-        }
-
-        if (win) {
-          
-          clearTimeout(resetColor);
-          setWinner(`${currentTurn} has won!`)
-          setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
-          if (score[currentTurn] + 1 > highScore[1]) {
-            setHighScore([currentTurn, score[currentTurn] + 1])
-            localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
-          }
-          highlight(pattern,"lightgreen",4000);
-          return true;
-        }
-      }
-    }
-   return false;
   }
 
   //highlight winning pattern
   let resetColor;
   const highlight = (array, color, timeDelay) => {
-    
+    console.log(array)
     for (let point of array) {
-      document.getElementById(point.replaceAll(",","")).style.backgroundColor = color;
+      console.log(point)
+      let [z,x,y] = point;
+      console.log(z,x,y)
+      console.log(`${z}${x}${y}`)
+      console.log(document.getElementById(`${z}${x}${y}`))
+      document.getElementById(`${z}${x}${y}`).style.backgroundColor = color;
     }
 
     resetColor = setTimeout(() => {
       for (let point of array) {
-        document.getElementById(point.replaceAll(",","")).style.backgroundColor = "white";
+        let [z,x,y] = point;
+        document.getElementById(`${z}${x}${y}`).style.backgroundColor = "white";
       }
 
     }, timeDelay)
@@ -262,23 +245,34 @@ export default function App() {
 
 
   const handleClick = (z,x,y,currentTurn) => {
-   let win;
+    let win;
+
+    playSound(currentTurn);
     
     //update the board
     const newGrid = [...grid];
-    
     newGrid[z][x][y] = turn;
-    
     setGrid(newGrid)
+
     //check for a win
-    if (checkWin(newGrid, [z,x,y], currentTurn)) {
+    let pattern = hasWon(newGrid, [z,x,y], currentTurn);
+    if (pattern) {
+      clearTimeout(resetColor);
+      setWinner(`${currentTurn} has won!`)
+      setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
+      if (score[currentTurn] + 1 > highScore[1]) {
+        setHighScore([currentTurn, score[currentTurn] + 1])
+        localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
+      }
+      highlight(pattern,"lightgreen",4000);
       return;
     }
     
     //highlight the new move
-    highlight([`${z},${x},${y}`],"gold",500);
+    highlight([[z,x,y]],"gold",500);
 
     //never tested this...
+    // if array all not empty...
     if (moves == 26) {
       setWinner("It's a tie!")
       return;
@@ -287,16 +281,26 @@ export default function App() {
     setMoves(prev => prev + 1)
 
     //computer move
-    
     if (turn == "X" && oplayer) {
+      playSound("O");
       
       
         let [zz,xx,yy] = computerMove([z,x,y], newGrid);
         newGrid[zz][xx][yy] = "O"
-        highlight([`${zz},${xx},${yy}`],"gold",500);
+        highlight([[zz,xx,yy]],"gold",500);
         setGrid(newGrid)
-        
-        if (checkWin(newGrid, [zz,xx,yy], "O")) {
+
+        pattern = hasWon(newGrid, [zz,xx,yy], "O");
+        if (pattern) {
+          clearTimeout(resetColor);
+          setWinner(`${currentTurn} has won!`)
+          setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
+          if (score[currentTurn] + 1 > highScore[1]) {
+            setHighScore([currentTurn, score[currentTurn] + 1])
+            localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
+          }
+          highlight(pattern,"lightgreen",4000);
+      
           setGrid(newGrid)
           return;
         }

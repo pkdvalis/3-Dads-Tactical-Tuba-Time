@@ -17,7 +17,7 @@ export default function Level({ gridLevel, level, winner, handleClick, turn, siz
             
             return <button 
               onClick={(e) => {
-                console.log(gridLevel)
+                
                 if (gridLevel[x][y] != "") return;
                 if (winner) return;
                 handleClick(level,x,y,turn);
