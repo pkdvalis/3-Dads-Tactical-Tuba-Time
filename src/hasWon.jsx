@@ -1,7 +1,64 @@
 const hasWon = (array, square, turn) => {
     const [z,x,y] = square;
-    const n = array.length;
+    let n = array.length;
     let pattern = [];
+    
+
+    if (n === 1) {
+        n = array[0].length
+        
+        //check col
+        for (let i=0; i < n; i++) {
+            pattern.push([z,i,y]);
+            if(array[z][i][y] != turn)
+                break;
+            if(i == n-1){
+                console.log("1")
+                return pattern;
+            }
+        }
+
+        //check row
+        pattern = [];
+        for (let i = 0; i < n; i++) {
+            pattern.push([z,x,i]);
+            if(array[z][x][i] != turn)
+                break;
+            if(i == n-1){
+                console.log("2")
+                return pattern;
+            }
+        }
+
+        //check diag
+        pattern = [];
+        if(x == y){
+            for (let i = 0; i < n; i++) {
+                pattern.push([z,i,i]);
+                if(array[z][i][i] != turn)
+                    break;
+                if(i == n-1){
+                    console.log("3")
+                    return pattern;
+                }
+            }
+        }
+
+        //check anti diag (thanks rampion)
+        pattern = [];
+        if (x + y == n - 1) {
+            for (let i = 0; i < n; i++) {
+                pattern.push([z,i,(n-1)-i]);
+                if (array[z][i][(n-1)-i] != turn)
+                    break;
+                if(i == n-1){
+                    console.log("4")
+                    return pattern;
+                }
+            }
+        }
+        return false;
+    }
     
     //check col
     for (let i=0; i < n; i++) {

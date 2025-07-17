@@ -122,6 +122,9 @@ export default function App() {
   const sizes = [3,4,5]
   const [size, setSize] = useState(3);
   const initialGrid = Array.from({length: size}, e => Array.from({length: size}, e => Array(size).fill("")));
+  const flatGrid = Array.from({length: 1}, e => Array.from({length: size}, e => Array(size).fill("")));
+  const names = {X: 'The Knight', O: 'Graldrait the Destroyer'};
+  const [dimensions, setDimensions] = useState('3D');
   const [sound, setSound] = useState(false);
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
@@ -133,6 +136,18 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
 
+  const resetGame = () => {
+    setMoves(0)
+    setWinner(false)
+    if (dimensions === '3D') setGrid(initialGrid);
+    if (dimensions === '2D') setGrid(flatGrid);
+    setTurn("X");
+    if (blockCenter) {
+      blockCenterSquare();
+    }
+    return;
+  }
+  
   const blockCenterSquare = () => {
     console.log("block center")
     if (size === 3) {
@@ -278,8 +293,9 @@ export default function App() {
     //check for a win
     let pattern = hasWon(newGrid, [z,x,y], currentTurn);
     if (pattern) {
+      console.log(pattern)
       clearTimeout(resetColor);
-      setWinner(`${currentTurn} has won!`)
+      setWinner(`${names[currentTurn]} has won!`)
       setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
       if (score[currentTurn] + 1 > highScore[1]) {
         setHighScore([currentTurn, score[currentTurn] + 1])
@@ -312,8 +328,9 @@ export default function App() {
       //check for a win
       pattern = hasWon(newGrid, [zz,xx,yy], "O");
       if (pattern) {
+        console.log(pattern)
         clearTimeout(resetColor);
-        setWinner(`Graldrait the Destroyer has won!`)
+        setWinner(`${names['O']} has won!`)
         setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
         if (score[currentTurn] + 1 > highScore[1]) {
           setHighScore([currentTurn, score[currentTurn] + 1])
@@ -361,6 +378,14 @@ export default function App() {
       </p>
 
       <p>
+            <button onClick={() => {
+              setDimensions(prev => prev === '2D'? '3D' : '2D')
+              resetGame();
+            }}
+            >Dimensions: {dimensions}</button>
+        </p>
+
+      <p>
         <button onClick={() => {
         setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
         }}
@@ -403,6 +428,14 @@ export default function App() {
             id="resetHs">Reset High Score</button>
         </p>
 
+        <p id="setDimCtnr">
+            <button onClick={() => {
+              setDimensions(prev => prev === '2D'? '3D' : '2D')
+              resetGame();
+            }}
+            id="setDimBtn">Dimensions: {dimensions}</button>
+        </p>
+
         <p id="sizeBtnContainer">
             <button onClick={() => {
               setSize(prev => {
@@ -410,12 +443,13 @@ export default function App() {
                 let newSize = sizes[(i + 1) % sizes.length]
                 document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
                 document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
+                resetGame();
                 return newSize;
                 });
                 
 
             }}
-            id="sizeBtn">{size} x {size} x {size}</button>
+            id="sizeBtn">{dimensions === '3D' ? `${size} x ${size} x ${size}` : `${size} x ${size}`}</button>
         </p>
 
         <p>
@@ -433,16 +467,7 @@ export default function App() {
         </p>
 
         <p>
-          <button onClick={() => {
-              setMoves(0)
-              setWinner(false)
-              setGrid(initialGrid);
-              setTurn("X");
-              if (blockCenter) {
-                blockCenterSquare();
-              }
-              return;
-            }} id="reset">Reset</button>
+          <button onClick={resetGame} id="reset">Reset</button>
         </p>
       </div>
 
@@ -450,7 +475,7 @@ export default function App() {
 
   <div className='center'>
     <div className="turn">
-        { winner ? `${winner}` : `${turn}'s Turn`}
+        { winner ? `${winner}` : `${names[turn]}'s Turn`}
         </div>
 
     {
