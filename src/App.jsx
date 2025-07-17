@@ -127,7 +127,7 @@ export default function App() {
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
   const [moves, setMoves] = useState(0)
-  const [oplayer, setOplayer] = useState(false)
+  const [oplayer, setOplayer] = useState(true)
   const [score, setScore] = useState({X: 0, O: 0});
   const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
   const [difficulty, setDifficulty] = useState("Easy");
