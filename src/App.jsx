@@ -48,6 +48,8 @@ const randomDragonSound = () => {
   return preloadedDragonSfx[random];
 };
 
+
+
 const winningPatterns = [
   // Horizontal rows in each layer (XY plane)
   ["0,0,0","0,1,0","0,2,0"],
@@ -116,6 +118,7 @@ const winningPatterns = [
 
 
 export default function App() {
+  const [blockCenter, setBlockCenter] = useState(false);
   const sizes = [3,4,5]
   const [size, setSize] = useState(3);
   const initialGrid = Array.from({length: size}, e => Array.from({length: size}, e => Array(size).fill("")));
@@ -130,6 +133,23 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
 
+  const blockCenterSquare = () => {
+    console.log("block center")
+    if (size === 3) {
+      setGrid(prev => {
+        prev[1][1][1] = "B";
+        return prev;
+      
+      })
+    } else if (size === 5) {
+      setGrid(prev => {
+        prev[2][2][2] = "B";
+        return prev;
+      
+      })
+    }
+  }
+  
   const playSound = (player) => {
     if (sound) {
       if (player == "X") {
@@ -160,8 +180,10 @@ export default function App() {
   }
 
   const computerMove = (point, newGrid) => {
+    console.log(newGrid[1][1][1])
+    console.log(grid[1][1][1])
     if (difficulty == "Hard") {
-      if (newGrid[1][1][1] == "") {
+      if (newGrid[1][1][1] === "" && grid[1][1][1] === "") {
         return [1,1,1];
       } 
         //make db of patterns
@@ -323,8 +345,13 @@ export default function App() {
       <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
       <label htmlFor="oplayer">Computer controls O:</label>
       <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
-      <label htmlFor="soundcheck">Sound:</label>
-      <input type="checkbox" id="soundcheck" name="soundcheck" checked={sound} onChange={() => setSound(!sound)} />
+      <label htmlFor="blockcenter">Block Center Square:</label>
+      <input type="checkbox" id="blockcenter" name="blockcenter" checked={blockCenter} onChange={() => {
+            setBlockCenter(!blockCenter);
+            }} />
+      <p>
+        <button onClick={() => setSound(!sound)}>Sound: {sound? `On` : `Off` }</button>
+      </p>
       <p>
         <button onClick={() => {
           localStorage.removeItem('highScore')
@@ -356,13 +383,18 @@ export default function App() {
         <div id="computerControls">
           <label htmlFor="oplayer">Computer controls O:</label>
           <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
-          <label htmlFor="soundcheck">Sound:</label>
-          <input type="checkbox" id="soundcheck" name="soundcheck" checked={sound} onChange={() => setSound(!sound)} />
+          <label htmlFor="blockcenter">Block Center Square:</label>
+          <input type="checkbox" id="blockcenter" name="blockcenter" checked={blockCenter} onChange={() => {
+            setBlockCenter(!blockCenter);
+            }} />
+          
         </div>
       </div>
     
       <div id="buttons">
-
+      <p id="soundcheck">
+        <button onClick={() => setSound(!sound)}>Sound: {sound? `On` : `Off` }</button>
+      </p>
         <p id="resetHsBtnContainer">
             <button onClick={() => {
               localStorage.removeItem('highScore')
@@ -406,6 +438,9 @@ export default function App() {
               setWinner(false)
               setGrid(initialGrid);
               setTurn("X");
+              if (blockCenter) {
+                blockCenterSquare();
+              }
               return;
             }} id="reset">Reset</button>
         </p>

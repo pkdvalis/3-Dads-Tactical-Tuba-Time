@@ -1,6 +1,7 @@
 import sword from './assets/sword.png';
 import dragon from './assets/dragon.png';
 import blank from './assets/blank.png';
+import fire from './assets/fire.png';
 
 export default function Level({ gridLevel, level, winner, handleClick, turn, size }) {
 
@@ -25,7 +26,7 @@ export default function Level({ gridLevel, level, winner, handleClick, turn, siz
                 }}
               key={level.toString()+x+y} 
               id={level.toString()+x+y}
-              className="square"><img src={square == 'X'? sword : square == "O" ? dragon : blank} width="100%" /></button>
+              className="square"><img src={square == 'X'? sword : square == "O" ? dragon : square == "B" ? fire : blank} width="100%" /></button>
     
             })
           })
