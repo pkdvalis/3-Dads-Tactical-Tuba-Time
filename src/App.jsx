@@ -283,30 +283,29 @@ export default function App() {
     //computer move
     if (turn == "X" && oplayer) {
       playSound("O");
-      
-      
-        let [zz,xx,yy] = computerMove([z,x,y], newGrid);
-        newGrid[zz][xx][yy] = "O"
-        highlight([[zz,xx,yy]],"gold",500);
-        setGrid(newGrid)
+      let [zz,xx,yy] = computerMove([z,x,y], newGrid);
+      newGrid[zz][xx][yy] = "O"
+      highlight([[zz,xx,yy]],"gold",500);
+      setGrid(newGrid)
 
-        pattern = hasWon(newGrid, [zz,xx,yy], "O");
-        if (pattern) {
-          clearTimeout(resetColor);
-          setWinner(`${currentTurn} has won!`)
-          setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
-          if (score[currentTurn] + 1 > highScore[1]) {
-            setHighScore([currentTurn, score[currentTurn] + 1])
-            localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
-          }
-          highlight(pattern,"lightgreen",4000);
-      
-          setGrid(newGrid)
-          return;
+      //check for a win
+      pattern = hasWon(newGrid, [zz,xx,yy], "O");
+      if (pattern) {
+        clearTimeout(resetColor);
+        setWinner(`Graldrait the Destroyer has won!`)
+        setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
+        if (score[currentTurn] + 1 > highScore[1]) {
+          setHighScore([currentTurn, score[currentTurn] + 1])
+          localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
         }
-      } else {
-        setTurn(prev => prev == "X"? "O" : "X")
+        highlight(pattern,"lightgreen",4000);
+    
+        setGrid(newGrid)
         return;
+      }
+    } else {
+      setTurn(prev => prev == "X"? "O" : "X")
+      return;
       }
     
     
@@ -341,20 +340,7 @@ export default function App() {
         }}
         >Difficulty: {difficulty}</button>
         </p>
-        <p>
-            <button onClick={() => {
-              setSize(prev => {
-                let i = sizes.indexOf(prev);
-                let newSize = sizes[(i + 1) % sizes.length]
-                document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
-                document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
-                return newSize;
-                });
-                
 
-            }}
-            id="sizeBtn">{size} x {size} x {size}</button>
-        </p>
       <p>
         <button onClick={() => {
         setShowOptions(prev => !prev)
@@ -422,7 +408,7 @@ export default function App() {
               setGrid(initialGrid);
               setTurn("X");
               return;
-            }} id="reset">{winner ? `${winner}Reset` : `Reset`}</button>
+            }} id="reset">Reset</button>
         </p>
       </div>
 
