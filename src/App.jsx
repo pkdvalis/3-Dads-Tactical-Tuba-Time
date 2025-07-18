@@ -3,73 +3,7 @@ import './App.css'
 import Level from './Level.jsx';
 import hasWon from './hasWon.jsx';
 import playSound from './playSound.jsx';
-
-const winningPatterns = [
-  // Horizontal rows in each layer (XY plane)
-  ["0,0,0","0,1,0","0,2,0"],
-  ["0,0,1","0,1,1","0,2,1"],
-  ["0,0,2","0,1,2","0,2,2"],
-  ["1,0,0","1,1,0","1,2,0"],
-  ["1,0,1","1,1,1","1,2,1"],
-  ["1,0,2","1,1,2","1,2,2"],
-  ["2,0,0","2,1,0","2,2,0"],
-  ["2,0,1","2,1,1","2,2,1"],
-  ["2,0,2","2,1,2","2,2,2"],
-
-  // Vertical columns in each layer (XY plane)
-  ["0,0,0","0,0,1","0,0,2"],
-  ["0,1,0","0,1,1","0,1,2"],
-  ["0,2,0","0,2,1","0,2,2"],
-  ["1,0,0","1,0,1","1,0,2"],
-  ["1,1,0","1,1,1","1,1,2"],
-  ["1,2,0","1,2,1","1,2,2"],
-  ["2,0,0","2,0,1","2,0,2"],
-  ["2,1,0","2,1,1","2,1,2"],
-  ["2,2,0","2,2,1","2,2,2"],
-
-  // Lines through layers (Z axis)
-  ["0,0,0","1,0,0","2,0,0"],
-  ["0,1,0","1,1,0","2,1,0"],
-  ["0,2,0","1,2,0","2,2,0"],
-  ["0,0,1","1,0,1","2,0,1"],
-  ["0,1,1","1,1,1","2,1,1"],
-  ["0,2,1","1,2,1","2,2,1"],
-  ["0,0,2","1,0,2","2,0,2"],
-  ["0,1,2","1,1,2","2,1,2"],
-  ["0,2,2","1,2,2","2,2,2"],
-
-  // Diagonals in XY planes (each layer)
-  ["0,0,0","0,1,1","0,2,2"],
-  ["0,2,0","0,1,1","0,0,2"],
-  ["1,0,0","1,1,1","1,2,2"],
-  ["1,2,0","1,1,1","1,0,2"],
-  ["2,0,0","2,1,1","2,2,2"],
-  ["2,2,0","2,1,1","2,0,2"],
-
-  // Diagonals through layers (XZ planes)
-  ["0,0,0","1,1,0","2,2,0"],
-  ["0,2,0","1,1,0","2,0,0"],
-  ["0,0,1","1,1,1","2,2,1"],
-  ["0,2,1","1,1,1","2,0,1"],
-  ["0,0,2","1,1,2","2,2,2"],
-  ["0,2,2","1,1,2","2,0,2"],
-
-  // Diagonals through layers (YZ planes)
-  ["0,0,0","1,0,1","2,0,2"],
-  ["0,0,2","1,0,1","2,0,0"],
-  ["0,1,0","1,1,1","2,1,2"],
-  ["0,1,2","1,1,1","2,1,0"],
-  ["0,2,0","1,2,1","2,2,2"],
-  ["0,2,2","1,2,1","2,2,0"],
-
-  // 4 space diagonals through the cube
-  ["0,0,0","1,1,1","2,2,2"],
-  ["0,2,0","1,1,1","2,0,2"],
-  ["0,0,2","1,1,1","2,2,0"],
-  ["0,2,2","1,1,1","2,0,0"]
-];
-
-
+import computerMove from './computerMove.jsx';
 
 export default function App() {
   const [blockCenter, setBlockCenter] = useState(false);
@@ -139,92 +73,6 @@ export default function App() {
     }, timeDelay)
   }
 
-  const computerMove = (point, newGrid) => {
-    console.log(newGrid[1][1][1])
-    console.log(grid[1][1][1])
-    if (difficulty == "Hard") {
-      if (newGrid[1][1][1] === "" && grid[1][1][1] === "") {
-        return [1,1,1];
-      } 
-        //make db of patterns
-      let possibleMoves = [];
-      for (let pattern of winningPatterns) {
-        
-          //count 0s it has
-          let num = 0;
-          for (let array of pattern) {
-            let [zz,xx,yy] = array.split(",")
-            if (newGrid[zz][xx][yy] == "O") {
-              num++;
-            }
-          }
-          //store it if it has 2 "O"s
-        
-          if (num == 2) {
-            possibleMoves.push([pattern])
-          }
-          
-        }
-        
-          //Return a free space in the pattern
-          for (let i = possibleMoves.length - 1; i >= 0; i--) {
-            for (let pattern of possibleMoves[i]) {
-              for (let array of pattern) {
-                
-                let [zz,xx,yy] = array.split(",")
-                  if (newGrid[zz][xx][yy] == "") {
-                    
-                    return [parseInt(zz),parseInt(xx),parseInt(yy)];
-                  }
-            }
-          }
-        }
-    }
-
-
-
-    //make db of patterns
-    let possibleMoves = [[[],0]];
-    
-    for (let pattern of winningPatterns) {
-      
-        //count Xs it has
-        let num = 0;
-        for (let array of pattern) {
-          let [zz,xx,yy] = array.split(",")
-          if (newGrid[zz][xx][yy] == "X") {
-            num++;
-          }
-        }
-        //store it if it's biggest
-        if (num > 0) {
-          possibleMoves.push([pattern,num])
-        }
-        
-      }
-      
-      possibleMoves.sort((a, b) => a[1] - b[1]);
-              
-        //Return a free space in the pattern
-        for (let i = possibleMoves.length - 1; i >= 0; i--) {
-          for (let pattern of possibleMoves[i]) {
-            if (!Array.isArray(pattern)) continue;
-            for (let array of pattern) {
-              
-              let [zz,xx,yy] = array.split(",")
-                if (newGrid[zz][xx][yy] == "") {
-                  
-                  return [parseInt(zz),parseInt(xx),parseInt(yy)];
-                }
-          }
-        }
-      }
-        
-     
-  }
-
-
-
   const handleClick = (z,x,y,currentTurn) => {
     let win;
 
@@ -265,7 +113,7 @@ export default function App() {
     //computer move
     if (turn == "X" && oplayer) {
       if (sound) playSound("O");
-      let [zz,xx,yy] = computerMove([z,x,y], newGrid);
+      let [zz,xx,yy] = computerMove(newGrid, difficulty, grid);
       newGrid[zz][xx][yy] = "O"
       highlight([[zz,xx,yy]],"gold",500);
       setGrid(newGrid)
@@ -273,16 +121,16 @@ export default function App() {
       //check for a win
       pattern = hasWon(newGrid, [zz,xx,yy], "O");
       if (pattern) {
-        console.log(pattern)
         clearTimeout(resetColor);
         setWinner(`${names['O']} has won!`)
         setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
+        //set high score
         if (score[currentTurn] + 1 > highScore[1]) {
           setHighScore([currentTurn, score[currentTurn] + 1])
           localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
         }
+        //highlight the winning line
         highlight(pattern,"lightgreen",4000);
-    
         setGrid(newGrid)
         return;
       }
@@ -291,12 +139,8 @@ export default function App() {
       return;
       }
     
-    
-      
-    
  }
 
-  
   return (
     
   
