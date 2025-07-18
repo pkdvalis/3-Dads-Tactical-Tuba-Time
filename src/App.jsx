@@ -23,7 +23,7 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
 
-  //highlight winning patterns when dimensions changes
+  //highlight winning patterns when dimensions or size changes
   useEffect(() => {
   
       for (let i=0; i<size; i++) {
@@ -77,10 +77,7 @@ export default function App() {
     return;
   }
   
-
-  
-
-  
+  //highlight function
   let resetColor;
   const highlight = (array, color, timeDelay) => {
     
@@ -100,8 +97,6 @@ export default function App() {
   }
 
   const handleClick = (z,x,y,currentTurn) => {
-    let win;
-
     if (sound) playSound(currentTurn);
     
     //update the board
@@ -161,9 +156,6 @@ export default function App() {
 
   return (
     
-  
-      
-  
   <div id="game">
   <p id="title">The Matrix: Multi-dimensional Tic Tac Toe</p>  
 

@@ -3,7 +3,7 @@ import dragon from './assets/dragon.png';
 import blank from './assets/blank.png';
 import fire from './assets/fire.png';
 
-export default function Level({ gridLevel, level, winner, handleClick, turn, size, blockindex }) {
+export default function Level({ gridLevel, level, winner, handleClick, turn, size }) {
 
     return (
     
