@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css'
 import Level from './Level.jsx';
+import Options from './Options.jsx';
 import hasWon from './hasWon.jsx';
 import playSound from './playSound.jsx';
 import computerMove from './computerMove.jsx';
@@ -11,7 +12,6 @@ export default function App() {
   const [size, setSize] = useState(3);
   const initialGrid = Array.from({length: size}, e => Array.from({length: size}, e => Array(size).fill("")));
   const flatGrid = Array.from({length: 1}, e => Array.from({length: size}, e => Array(size).fill("")));
-  const names = {X: 'The Knight', O: 'Graldrait the Destroyer'};
   const [dimensions, setDimensions] = useState('3D');
   const [sound, setSound] = useState(false);
   const [turn, setTurn] = useState("X")
@@ -20,22 +20,34 @@ export default function App() {
   const [moves, setMoves] = useState(0)
   const [oplayer, setOplayer] = useState(true)
   const [score, setScore] = useState({X: 0, O: 0});
-  const [highScore, setHighScore] = useState(JSON.parse(localStorage.getItem("highScore")) || ['X',0]);
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
 
-  const resetGame = () => {
-    setMoves(0)
-    setWinner(false)
-    if (dimensions === '3D') setGrid(initialGrid);
-    if (dimensions === '2D') setGrid(flatGrid);
-    setTurn("X");
-    if (blockCenter) {
-      blockCenterSquare();
-    }
-    return;
-  }
+  //highlight winning patterns when dimensions changes
+  useEffect(() => {
   
+      for (let i=0; i<size; i++) {
+          highlight([[0,0,i]],"lightgreen",1000)
+        }
+        for (let i=0; i<size; i++) {
+          setTimeout(() => highlight([[0,i,0]],"lightgreen",1000), 1500)
+        }
+        for (let i=0; i<size; i++) {
+          setTimeout(() => highlight([[0,i,i]],"lightgreen",1000), 3000)
+        }
+  
+      
+      if (dimensions == '3D') {
+        for (let i=0; i<size; i++) {
+          setTimeout(() => highlight([[i,0,2]],"lightgreen",1000), 4500)
+        }
+        for (let i=0; i<size; i++) {
+          setTimeout(() => highlight([[i,i,i]],"lightgreen",1000), 6000)
+        }
+      }
+
+    }, [dimensions, size]);
+
   const blockCenterSquare = () => {
     console.log("block center")
     if (size === 3) {
@@ -52,9 +64,23 @@ export default function App() {
       })
     }
   }
+
+  const resetGame = () => {
+    setMoves(0)
+    setWinner(false)
+    if (dimensions === '3D') setGrid(initialGrid);
+    if (dimensions === '2D') setGrid(flatGrid);
+    setTurn("X");
+    if (blockCenter) {
+      blockCenterSquare();
+    }
+    return;
+  }
   
 
-  //highlight winning pattern
+  
+
+  
   let resetColor;
   const highlight = (array, color, timeDelay) => {
     
@@ -84,16 +110,12 @@ export default function App() {
     setGrid(newGrid)
 
     //check for a win
-    let pattern = hasWon(newGrid, [z,x,y], currentTurn);
+    let pattern = hasWon(newGrid, [z,x,y], currentTurn, dimensions);
     if (pattern) {
       console.log(pattern)
       clearTimeout(resetColor);
-      setWinner(`${names[currentTurn]} has won!`)
+      setWinner(`${currentTurn} has won!`)
       setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
-      if (score[currentTurn] + 1 > highScore[1]) {
-        setHighScore([currentTurn, score[currentTurn] + 1])
-        localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
-      }
       highlight(pattern,"lightgreen",4000);
       return;
     }
@@ -119,16 +141,12 @@ export default function App() {
       setGrid(newGrid)
 
       //check for a win
-      pattern = hasWon(newGrid, [zz,xx,yy], "O");
+      pattern = hasWon(newGrid, [zz,xx,yy], "O", dimensions);
       if (pattern) {
         clearTimeout(resetColor);
-        setWinner(`${names['O']} has won!`)
+        setWinner(`${'O'} has won!`)
         setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
-        //set high score
-        if (score[currentTurn] + 1 > highScore[1]) {
-          setHighScore([currentTurn, score[currentTurn] + 1])
-          localStorage.setItem("highScore", JSON.stringify([currentTurn, score[currentTurn] + 1]));
-        }
+        
         //highlight the winning line
         highlight(pattern,"lightgreen",4000);
         setGrid(newGrid)
@@ -144,42 +162,30 @@ export default function App() {
   return (
     
   
+      
+  
   <div id="game">
-    
+  <p id="title">The Matrix: Multi-dimensional Tic Tac Toe</p>  
 
     <div id="optionsModal" style={{display: showOptions? 'block' : 'none'}}>
-      <p>High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
-      <label htmlFor="oplayer">Computer controls O:</label>
-      <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
-      <label htmlFor="blockcenter">Block Center Square:</label>
-      <input type="checkbox" id="blockcenter" name="blockcenter" checked={blockCenter} onChange={() => {
-            setBlockCenter(!blockCenter);
-            }} />
-      <p>
-        <button onClick={() => setSound(!sound)}>Sound: {sound? `On` : `Off` }</button>
-      </p>
-      <p>
-        <button onClick={() => {
-          localStorage.removeItem('highScore')
-          setHighScore(['X',0])
-        }}
-        >Reset High Score</button>
-      </p>
-
-      <p>
-            <button onClick={() => {
-              setDimensions(prev => prev === '2D'? '3D' : '2D')
-              resetGame();
-            }}
-            >Dimensions: {dimensions}</button>
-        </p>
-
-      <p>
-        <button onClick={() => {
-        setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
-        }}
-        >Difficulty: {difficulty}</button>
-        </p>
+      
+    <Options id={"modal"}
+                size={size}
+                score={score}
+                oplayer={oplayer}
+                blockCenter={blockCenter}
+                sound={sound}
+                dimensions={dimensions}
+                sizes={sizes}
+                difficulty={difficulty}
+                setDifficulty={setDifficulty}
+                setOplayer={setOplayer}
+                setBlockCenter={setBlockCenter}
+                setSound={setSound}
+                setDimensions={setDimensions}
+                resetGame={resetGame}
+                setSize={setSize}
+                highlight={highlight} />
 
       <p>
         <button onClick={() => {
@@ -190,83 +196,45 @@ export default function App() {
     </div>
 
     <div className="sidebar">
-      <div id="computer">
       
-        <p id="highscore">High Score: {highScore[1] ? `${highScore[0]}: ${highScore[1]}` : ''}</p>
-        <p>Score X: {score['X']} O: {score['O']}</p>
-        <div id="computerControls">
-          <label htmlFor="oplayer">Computer controls O:</label>
-          <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
-          <label htmlFor="blockcenter">Block Center Square:</label>
-          <input type="checkbox" id="blockcenter" name="blockcenter" checked={blockCenter} onChange={() => {
-            setBlockCenter(!blockCenter);
-            }} />
-          
-        </div>
-      </div>
-    
-      <div id="buttons">
-      <p id="soundcheck">
-        <button onClick={() => setSound(!sound)}>Sound: {sound? `On` : `Off` }</button>
-      </p>
-        <p id="resetHsBtnContainer">
-            <button onClick={() => {
-              localStorage.removeItem('highScore')
-              setHighScore(['X',0])
-            }}
-            id="resetHs">Reset High Score</button>
-        </p>
+      <p>X: {score['X']} O: {score['O']}</p>
 
-        <p id="setDimCtnr">
-            <button onClick={() => {
-              setDimensions(prev => prev === '2D'? '3D' : '2D')
-              resetGame();
-            }}
-            id="setDimBtn">Dimensions: {dimensions}</button>
-        </p>
-
-        <p id="sizeBtnContainer">
-            <button onClick={() => {
-              setSize(prev => {
-                let i = sizes.indexOf(prev);
-                let newSize = sizes[(i + 1) % sizes.length]
-                document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
-                document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
-                resetGame();
-                return newSize;
-                });
-                
-
-            }}
-            id="sizeBtn">{dimensions === '3D' ? `${size} x ${size} x ${size}` : `${size} x ${size}`}</button>
-        </p>
-
-        <p>
-            <button onClick={() => {
-              setDifficulty(prev => prev == "Easy"? "Hard" : "Easy")
-            }}
-            id="difficultyBtn">Difficulty: {difficulty}</button>
-        </p>
-
-        <p>
+      <Options  id={"options"}
+                size={size}
+                score={score}
+                oplayer={oplayer}
+                blockCenter={blockCenter}
+                sound={sound}
+                dimensions={dimensions}
+                sizes={sizes}
+                difficulty={difficulty}
+                setDifficulty={setDifficulty}
+                setOplayer={setOplayer}
+                setBlockCenter={setBlockCenter}
+                setSound={setSound}
+                setDimensions={setDimensions}
+                resetGame={resetGame}
+                setSize={setSize}
+                highlight={highlight} />
+                <p>
             <button onClick={() => {
               setShowOptions(prev => !prev)
             }}
             id="optionsBtn">Options</button>
         </p>
-
-        <p>
+         <p>
           <button onClick={resetGame} id="reset">Reset</button>
         </p>
-      </div>
+      
 
     </div>
 
   <div className='center'>
     <div className="turn">
-        { winner ? `${winner}` : `${names[turn]}'s Turn`}
+        { winner ? `${winner}` : `${turn}'s Turn`}
         </div>
 
+      
     {
     grid.map((level,index) => <Level gridLevel={level} level={index} winner={winner} handleClick={handleClick} turn={turn} size={size} />)
     }
