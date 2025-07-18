@@ -1,9 +1,21 @@
+/*
+* {
+  border: 10px red solid;
+}
+*/
+
 html,
 body {
   height: 100%;
   margin: 0;
   background: rgb(117, 126, 129);
   font-size: 1em;
+}
+
+#title {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #computer {
@@ -81,9 +93,9 @@ button {
   border-radius: 0 !important;
   transition: 0.2s;
   box-shadow: 0px 5px 0px rgba(31, 31, 31, 0.75);
-  -webkit-transition: background-color 2000ms;
-  -ms-transition: background-color 2000ms;
-  transition: background-color 2000ms;
+  -webkit-transition: background-color 1000ms;
+  -ms-transition: background-color 1000ms;
+  transition: background-color 1000ms;
 }
 
 button:hover {
@@ -141,13 +153,20 @@ button:active {
     flex-wrap: wrap;
   }
 
+  #title {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
   .turn {
-    font-size: 1em;
+    margin: 5px;
+    font-size: 1.5em;
   }
 
   .board-wrapper {
     margin: 0px;
-    padding: 0px;
+    padding: 5px;
     border: 0px;
   }
 
@@ -165,31 +184,11 @@ button:active {
     margin: 0px;
     width: 100vw;
     justify-content: space-around;
-    font-size: 1em;
+    font-size: 1.25em;
   }
 
-  #highscore {
-    display: block;
-    flex: 0;
-  }
-
-  #sizeBtnContainer,
-  #soundcheck {
-    display: none;
-  }
-
-  #optionsBtn {
-    display: block;
-  }
-  #resetHsBtnContainer {
-    display: none;
-  }
-
-  #oplayer {
-    flex: 0;
-  }
-
-  #computerControls {
+  #options,
+  #sizeBtnContainer {
     display: none;
   }
 
@@ -203,39 +202,28 @@ button:active {
     justify-content: center;
   }
 
-  #computer {
-    font-size: 1.5em;
-    z-index: 100;
-  }
-
   button {
-    width: 155.15px;
-    height: 0%;
+    width: 156px;
+    height: 50px;
     font-size: 1rem;
   }
 
   #reset {
-    width: 100%;
-    height: 0%;
+    width: 125px;
+    height: 50px;
     font-size: 1rem;
   }
 
-  #resetHs {
-    width: 100%;
-    height: 0%;
-    font-size: 1rem;
+  #optionsBtn {
+    width: 125px;
+    height: 50px;
+    display: block;
   }
 
   #optionsModal {
     display: none;
-
     width: 100%;
     height: 100%;
     z-index: 10;
-  }
-
-  #difficultyBtn,
-  #setDimCtnr {
-    display: none;
   }
 }
