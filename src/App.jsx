@@ -26,6 +26,7 @@ export default function App() {
   
 
   //highlight winning patterns when dimensions or size changes
+  //removed size for now bc it caused a crash
   useEffect(() => {
   
       for (let i=0; i<size; i++) {
@@ -76,7 +77,6 @@ export default function App() {
       blockCenterSquare();
     }
     xMoves([0,0,0], size, dimensions, true);
-    return;
   }
   
   //highlight function
@@ -109,11 +109,11 @@ export default function App() {
     //check for a win
     let pattern = hasWon(newGrid, [z,x,y], currentTurn, size, dimensions);
     if (pattern) {
-      
       clearTimeout(resetColor);
       setWinner(`${currentTurn} has won!`)
       setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
       highlight(pattern,"lightgreen",4000);
+      setTurn(prev => prev == "X"? "O" : "X")
       return;
     }
     
@@ -140,7 +140,8 @@ export default function App() {
         
         //highlight the winning line
         highlight(pattern,"lightgreen",4000);
-        setGrid(newGrid)
+        setTurn(prev => prev == "X"? "O" : "X")
+        //setGrid(newGrid)
         return;
       }
     } else {
