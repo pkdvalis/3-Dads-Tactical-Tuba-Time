@@ -28,8 +28,8 @@ export default function Options({ id, size, oplayer, blockCenter, sound, dimensi
               setSize(prev => {
                 let i = sizes.indexOf(prev);
                 let newSize = sizes[(i + 1) % sizes.length]
-                //document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
-                //document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
+                document.getElementsByClassName('board')[0].style.gridTemplateColumns = `repeat(${newSize}, 1fr)`;
+                document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
                 return newSize;
                 });
                 resetGame();
