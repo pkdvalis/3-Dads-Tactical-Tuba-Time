@@ -1,10 +1,8 @@
 export default function Options({ id, size, oplayer, blockCenter, sound, dimensions, sizes, difficulty, setDifficulty, setOplayer, setBlockCenter, setSound, setDimensions, resetGame, setSize, highlight }) {
 
-
     return (
         <div id={id}>
 
-        
             <label htmlFor="oplayer">Computer controls O:</label>
             <input type="checkbox" id="oplayer" name="oplayer" checked={oplayer} onChange={() => setOplayer(!oplayer)} /><br />
             <label htmlFor="blockcenter">Block Center Square:</label>

@@ -64,7 +64,22 @@ useEffect(() => {
     }, [dimensions]);
 
   const blockCenterSquare = () => {
+    //block center 
+    if (!(grid[0][1].length % 2 == 0)) {
+      let center = [Math.floor(grid.length/2),
+                    Math.floor(grid[0][1].length/2),
+                    Math.floor(grid[0][2].length/2)]
+      let [z,y,x] = center;
+      
+      setGrid(prev => {
+        prev[1][1][1] = "B";
+        return prev;
+      })
+      
+    }
+
     
+    /*
     if (size === 3) {
       setGrid(prev => {
         prev[1][1][1] = "B";
@@ -77,7 +92,7 @@ useEffect(() => {
         return prev;
       
       })
-    }
+    }*/
   }
 
   const resetGame = () => {

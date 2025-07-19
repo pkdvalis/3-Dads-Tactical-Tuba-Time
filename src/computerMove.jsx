@@ -67,8 +67,10 @@ const winningPatterns = [
     
     const dimensions = [ grid.length, grid[0].length ];
 
-    //take center if it's free (hard mode only)
+    
     if (difficulty == "Hard") {
+      
+    //take center if it's free  
       if (!(grid[0][1].length % 2 == 0)) {
         let center = [Math.floor(grid.length/2),
                       Math.floor(grid[0][1].length/2),
