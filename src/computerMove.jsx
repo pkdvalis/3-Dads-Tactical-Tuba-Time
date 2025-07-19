@@ -64,29 +64,23 @@ const winningPatterns = [
   ];
 
   const computerMove = (newGrid, difficulty, grid, xPatterns) => {
-
+    
     const dimensions = [ grid.length, grid[0].length ];
 
-    
+    //take center if it's free (hard mode only)
     if (difficulty == "Hard") {
-        if (dimensions[0] == 3) {
-            if (dimensions[1] === 3 && newGrid[1][1][1] === "" && grid[1][1][1] === "") {
-                return [1,1,1];
-            } 
+      if (!(grid[0][1].length % 2 == 0)) {
+        let center = [Math.floor(grid.length/2),
+                      Math.floor(grid[0][1].length/2),
+                      Math.floor(grid[0][2].length/2)]
+        let [z,y,x] = center;
+        if (newGrid[z][y][x] === "" && grid[z][y][x] === "") {
+          return center;
         }
-    if (dimensions[0] == 5) {
-        if (dimensions[1] === 5 && newGrid[2][2][2] === "" && grid[2][2][2] === "") {
-            return [2,2,2];
-        } 
-    }
-    if (dimensions[0] == 1) {
-    if (dimensions[1] === 3 && newGrid[0][1][1] === "" && grid[0][1][1] === "") {
-            return [0,1,1];
-        } 
-        if (dimensions[1] === 5 && newGrid[0][2][2] === "" && grid[0][2][2] === "") {
-            return [0,2,2];
-        } 
-    }
+      }
+
+
+
       //make db of patterns
       let possibleMoves = [];
       for (let pattern of winningPatterns) {
@@ -128,11 +122,11 @@ const winningPatterns = [
     let possibleMoves = [[[],0]];
     
     for (let pattern of xPatterns) {
-        console.log(pattern)
+        
         //count Xs it has
         let num = 0;
         for (let array of pattern) {
-          console.log(array)
+          
           let [zz,xx,yy] = array
           if (newGrid[zz][xx][yy] == "X") {
             num++;

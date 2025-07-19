@@ -24,6 +24,18 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
   
+  const createGrid = (size) =>
+  Array.from({length: size}, () => Array.from({length: size}, () => Array(size).fill("")));
+
+  //make sure grid updates
+useEffect(() => {
+  clearTimeout(resetColor);
+  if (dimensions === '3D') {
+    setGrid(createGrid(size));
+  } else {
+    setGrid(Array.from({length: 1}, e => Array.from({length: size}, e => Array(size).fill(""))));
+  }
+}, [size, dimensions]);
 
   //highlight winning patterns when dimensions or size changes
   //removed size for now bc it caused a crash
