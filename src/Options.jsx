@@ -17,9 +17,8 @@ export default function Options({ id, size, oplayer, blockCenter, sound, dimensi
                 </p>
             <p>
             <button onClick={() => {
-              resetGame();
               setDimensions(prev => prev === '2D'? '3D' : '2D')
-              return;
+              resetGame();
             }}
             id="setDimBtn">Dimensions: {dimensions}</button>
         </p>
@@ -33,7 +32,7 @@ export default function Options({ id, size, oplayer, blockCenter, sound, dimensi
                 //document.getElementsByClassName('board')[0].style.gridTemplateRows = `repeat(${newSize}, 1fr)`;
                 return newSize;
                 });
-                
+                resetGame();
 
             }}
             id="sizeBtn">{dimensions === '3D' ? `${size} x ${size} x ${size}` : `${size} x ${size}`}</button>
