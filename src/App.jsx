@@ -85,24 +85,10 @@ export default function App() {
         return prev;
       });
     }
-
-    /*
-    if (size === 3) {
-      setGrid(prev => {
-        prev[1][1][1] = "B";
-        return prev;
-      
-      })
-    } else if (size === 5) {
-      setGrid(prev => {
-        prev[2][2][2] = "B";
-        return prev;
-      
-      })
-    }*/
   };
 
   const resetGame = () => {
+    if (sound) playSound("reset");
     setWinner(false);
     if (dimensions === "3D") setGrid(initialGrid);
     if (dimensions === "2D") setGrid(flatGrid);
@@ -141,6 +127,7 @@ export default function App() {
     //check for a win
     let pattern = hasWon(newGrid, [z, x, y], currentTurn, size, dimensions);
     if (pattern) {
+      playSound("win");
       clearTimeout(resetColor);
       setWinner(`${currentTurn} has won!`);
       setScore((prev) => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
@@ -168,9 +155,10 @@ export default function App() {
       //check for a win
       pattern = hasWon(newGrid, [zz, xx, yy], "O", size, dimensions);
       if (pattern) {
+        if (sound) playSound("win");
         clearTimeout(resetColor);
         setWinner(`${"O"} has won!`);
-        setScore((prev) => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
+        setScore((prev) => ({ ...prev, O: prev["O"] + 1 }));
 
         //highlight the winning line
         highlight(pattern, "lightgreen", 4000);
