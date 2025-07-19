@@ -5,8 +5,10 @@ import Options from './Options.jsx';
 import hasWon from './hasWon.jsx';
 import playSound from './playSound.jsx';
 import computerMove from './computerMove.jsx';
+import xMoves from './xMoves.jsx';
 
 export default function App() {
+  
   const [blockCenter, setBlockCenter] = useState(false);
   const sizes = [3,4,5]
   const [size, setSize] = useState(3);
@@ -17,11 +19,11 @@ export default function App() {
   const [turn, setTurn] = useState("X")
   const [grid, setGrid] = useState(initialGrid)
   const [winner, setWinner] = useState(false)
-  const [moves, setMoves] = useState(0)
   const [oplayer, setOplayer] = useState(true)
   const [score, setScore] = useState({X: 0, O: 0});
   const [difficulty, setDifficulty] = useState("Easy");
   const [showOptions, setShowOptions] = useState(false);
+  
 
   //highlight winning patterns when dimensions or size changes
   useEffect(() => {
@@ -39,17 +41,17 @@ export default function App() {
       
       if (dimensions == '3D') {
         for (let i=0; i<size; i++) {
-          setTimeout(() => highlight([[i,0,2]],"lightgreen",1000), 4500)
+         setTimeout(() => highlight([[i,0,2]],"lightgreen",1000), 4500)
         }
         for (let i=0; i<size; i++) {
           setTimeout(() => highlight([[i,i,i]],"lightgreen",1000), 6000)
         }
       }
 
-    }, [dimensions, size]);
+    }, [dimensions]);
 
   const blockCenterSquare = () => {
-    console.log("block center")
+    
     if (size === 3) {
       setGrid(prev => {
         prev[1][1][1] = "B";
@@ -66,7 +68,6 @@ export default function App() {
   }
 
   const resetGame = () => {
-    setMoves(0)
     setWinner(false)
     if (dimensions === '3D') setGrid(initialGrid);
     if (dimensions === '2D') setGrid(flatGrid);
@@ -74,6 +75,7 @@ export default function App() {
     if (blockCenter) {
       blockCenterSquare();
     }
+    xMoves([0,0,0], size, dimensions, true);
     return;
   }
   
@@ -105,9 +107,9 @@ export default function App() {
     setGrid(newGrid)
 
     //check for a win
-    let pattern = hasWon(newGrid, [z,x,y], currentTurn, dimensions);
+    let pattern = hasWon(newGrid, [z,x,y], currentTurn, size, dimensions);
     if (pattern) {
-      console.log(pattern)
+      
       clearTimeout(resetColor);
       setWinner(`${currentTurn} has won!`)
       setScore(prev => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
@@ -118,25 +120,19 @@ export default function App() {
     //highlight the new move
     highlight([[z,x,y]],"gold",500);
 
-    //never tested this...
-    // if array all not empty...
-    if (moves == 26) {
-      setWinner("It's a tie!")
-      return;
-    }
-
-    setMoves(prev => prev + 1)
-
+    //update db of X moves and associated lines
+    xMoves([z,x,y], size, dimensions, false);
+    
     //computer move
     if (turn == "X" && oplayer) {
       if (sound) playSound("O");
-      let [zz,xx,yy] = computerMove(newGrid, difficulty, grid);
+      let [zz,xx,yy] = computerMove(newGrid, difficulty, grid, xMoves());
       newGrid[zz][xx][yy] = "O"
       highlight([[zz,xx,yy]],"gold",500);
       setGrid(newGrid)
 
       //check for a win
-      pattern = hasWon(newGrid, [zz,xx,yy], "O", dimensions);
+      pattern = hasWon(newGrid, [zz,xx,yy], "O", size, dimensions);
       if (pattern) {
         clearTimeout(resetColor);
         setWinner(`${'O'} has won!`)
@@ -151,6 +147,7 @@ export default function App() {
       setTurn(prev => prev == "X"? "O" : "X")
       return;
       }
+      
     
  }
 

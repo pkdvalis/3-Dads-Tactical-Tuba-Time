@@ -63,11 +63,10 @@ const winningPatterns = [
     ["0,2,2","1,1,1","2,0,0"]
   ];
 
-  const computerMove = (newGrid, difficulty, grid) => {
+  const computerMove = (newGrid, difficulty, grid, xPatterns) => {
 
     const dimensions = [ grid.length, grid[0].length ];
-    console.log(dimensions)
-    console.log(grid[0][2][2])
+
     
     if (difficulty == "Hard") {
         if (dimensions[0] == 3) {
@@ -128,12 +127,13 @@ const winningPatterns = [
     //make db of patterns
     let possibleMoves = [[[],0]];
     
-    for (let pattern of winningPatterns) {
-      
+    for (let pattern of xPatterns) {
+        console.log(pattern)
         //count Xs it has
         let num = 0;
         for (let array of pattern) {
-          let [zz,xx,yy] = array.split(",")
+          console.log(array)
+          let [zz,xx,yy] = array
           if (newGrid[zz][xx][yy] == "X") {
             num++;
           }
@@ -153,7 +153,7 @@ const winningPatterns = [
             if (!Array.isArray(pattern)) continue;
             for (let array of pattern) {
               
-              let [zz,xx,yy] = array.split(",")
+              let [zz,xx,yy] = array
                 if (newGrid[zz][xx][yy] == "") {
                   
                   return [parseInt(zz),parseInt(xx),parseInt(yy)];
