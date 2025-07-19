@@ -6,6 +6,7 @@ import hasWon from "./hasWon.jsx";
 import playSound from "./playSound.jsx";
 import computerMove from "./computerMove.jsx";
 import xMoves from "./xMoves.jsx";
+import oMoves from "./oMoves.jsx";
 
 export default function App() {
   const [blockCenter, setBlockCenter] = useState(false);
@@ -77,10 +78,10 @@ export default function App() {
         Math.floor(grid[0][1].length / 2),
         Math.floor(grid[0][2].length / 2),
       ];
-      let [z, y, x] = center;
+      let [z, x, y] = center;
 
       setGrid((prev) => {
-        prev[1][1][1] = "B";
+        prev[z][x][y] = "B";
         return prev;
       });
     }
@@ -110,6 +111,7 @@ export default function App() {
       blockCenterSquare();
     }
     xMoves([0, 0, 0], size, dimensions, true);
+    oMoves([0, 0, 0], size, dimensions, true);
   };
 
   //highlight function
@@ -157,6 +159,8 @@ export default function App() {
     if (turn == "X" && oplayer) {
       if (sound) playSound("O");
       let [zz, xx, yy] = computerMove(newGrid, difficulty, grid, xMoves());
+      //update omoves db
+      oMoves([zz, xx, yy], size, dimensions, false);
       newGrid[zz][xx][yy] = "O";
       highlight([[zz, xx, yy]], "gold", 500);
       setGrid(newGrid);
