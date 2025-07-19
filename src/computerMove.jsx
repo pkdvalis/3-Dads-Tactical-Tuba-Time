@@ -111,6 +111,7 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
     }
   }
 
+  //EASY mode
   //make db of patterns
   let possibleMoves = [[[], 0]];
 
@@ -123,16 +124,21 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
         num++;
       }
     }
-    //store it if it's biggest
+    //store it if it's biggest, num is weight
     if (num > 0) {
       possibleMoves.push([pattern, num]);
     }
   }
 
+  //sort by weight
   possibleMoves.sort((a, b) => a[1] - b[1]);
 
-  //Return a free space in the pattern
+  //loop through possible moves, bigger weight first
+  //Return the first free space
   for (let i = possibleMoves.length - 1; i >= 0; i--) {
+    //element of randomness so the game isn't identical each run
+    let rnd = Math.floor(Math.random() * 100);
+    if (rnd < 50) continue;
     for (let pattern of possibleMoves[i]) {
       if (!Array.isArray(pattern)) continue;
       for (let array of pattern) {
