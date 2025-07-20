@@ -76,7 +76,15 @@ export default function Options({
       <p>
         <button
           onClick={() => {
-            setDifficulty((prev) => (prev == "Easy" ? "Hard" : "Easy"));
+            setDifficulty((prev) =>
+              prev == "Easy"
+                ? "Medium"
+                : prev == "Medium"
+                ? "Hard"
+                : prev == "Hard"
+                ? "Easy"
+                : null
+            );
           }}
           id="difficultyBtn">
           Difficulty: {difficulty}

@@ -1,7 +1,3 @@
-import x01 from "./assets/x01.mp3";
-import x02 from "./assets/x02.mp3";
-import x03 from "./assets/x03.mp3";
-import o01 from "./assets/o01.mp3";
 import o02 from "./assets/o02.mp3";
 import o03 from "./assets/o03.mp3";
 import winSound from "./assets/x03.mp3";

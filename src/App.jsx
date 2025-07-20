@@ -127,7 +127,7 @@ export default function App() {
     //check for a win
     let pattern = hasWon(newGrid, [z, x, y], currentTurn, size, dimensions);
     if (pattern) {
-      playSound("win");
+      if (sound) playSound("win");
       clearTimeout(resetColor);
       setWinner(`${currentTurn} has won!`);
       setScore((prev) => ({ ...prev, [currentTurn]: prev[currentTurn] + 1 }));
