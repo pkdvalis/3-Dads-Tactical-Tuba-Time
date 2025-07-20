@@ -145,6 +145,7 @@ export default function App() {
     //computer move
     if (turn == "X" && oplayer) {
       if (sound) playSound("O");
+      console.log(computerMove(newGrid, difficulty, grid, xMoves()));
       let [zz, xx, yy] = computerMove(newGrid, difficulty, grid, xMoves());
       //update omoves db
       oMoves([zz, xx, yy], size, dimensions, false);
