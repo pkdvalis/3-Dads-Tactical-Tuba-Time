@@ -1,8 +1,10 @@
 import oMoves from "./oMoves.jsx";
+import evaluate from "./evaluate.jsx";
 
 const winningPatterns = oMoves();
 
 const computerMove = (newGrid, difficulty, grid, xPatterns) => {
+  //Computer move algos
   const takeCenterSquare = () => {
     if (!(grid[0][1].length % 2 == 0)) {
       let center = [
@@ -12,14 +14,13 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
       ];
       let [z, x, y] = center;
       if (newGrid[z][x][y] === "" && grid[z][x][y] === "") {
-        console.log("return:", center);
         return center;
       }
     }
   };
 
   const blockxn1 = () => {
-    //block X n-1
+    //block line with n-1 X's
     //make db of patterns
     let possibleMoves = [[[], 0]];
 
@@ -60,7 +61,7 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
   };
 
   const moreo = () => {
-    //Go with with where there is more O
+    //Go with line where there is more O
     //make db of patterns
     let possibleMoves = [[[], 0]];
     for (let pattern of winningPatterns) {
