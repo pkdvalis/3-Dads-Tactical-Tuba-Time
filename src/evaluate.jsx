@@ -1,7 +1,6 @@
 function evaluate(b) {
   const n = b[0][1].length;
   const levels = b.length;
-  console.log(n, levels);
 
   //check row
 
@@ -119,7 +118,8 @@ function evaluate(b) {
     }
 
     //vertial corners diag
-
+    //note to self z needs to be constrained to levels here but
+    //it does seem to work ok, probably doing extra cycles
     for (let i = 0; i < n; i++) {
       if (b[i][i][i] != b[0][0][0]) break;
       if (i === n - 1) {
