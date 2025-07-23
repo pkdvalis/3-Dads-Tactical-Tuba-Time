@@ -135,8 +135,13 @@ const minimaxAlgo = (inputBoard, difficulty) => {
   let MAX_DEPTH = 4;
   //3x3:
   //3 is bad, 4 is unbeatable
+  //4x4
+  //4 good speed, draw
+  //5x5:
+  //30s for 1st move, too slow, draw
   //3x3x3:
   //3 is bad, 5 seconds, terrible moves
+  //4 3m for 1st move, 1m20 for 2nd move, too slow but moves are ok
 
   console.log("Running minimax MAX_DEPTH: ", MAX_DEPTH);
 

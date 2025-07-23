@@ -140,7 +140,23 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
     }
   };
 
-  return minimaxAlgo(newGrid, difficulty);
+  let move;
+  console.log(difficulty, newGrid.length, newGrid[0][1].length);
+  if (
+    (difficulty == "Medium" || difficulty == "Hard") &&
+    newGrid.length == 1 &&
+    newGrid[0][1].length < 5
+  ) {
+    move = minimaxAlgo(newGrid, difficulty);
+  } else {
+    if (morex()) move = morex(); //lines with most x
+  }
+
+  if (!move || move == [-1, -1, -1]) {
+    if (moreo()) return moreo(); //lines with most o
+  }
+
+  return move;
 
   if (difficulty == "Medium" || difficulty == "Hard") {
     if (difficulty == "Hard") {
