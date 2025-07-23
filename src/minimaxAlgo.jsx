@@ -1,5 +1,7 @@
 // original code is contributed by rag2127
 // https://www.geeksforgeeks.org/dsa/finding-optimal-move-in-tic-tac-toe-using-minimax-algorithm-in-game-theory/
+// Followed this to add AB Pruning:
+// https://www.geeksforgeeks.org/dsa/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/
 
 import evaluate from "./evaluate.jsx";
 
@@ -27,8 +29,8 @@ function isMovesLeft(board, size, levels) {
 
 // Initial values of
 // Alpha and Beta
-let MAX = -1000;
-let MIN = 1000;
+let MAX = Infinity;
+let MIN = -Infinity;
 
 function minimax(board, depth, isMax, alpha, beta, MAX_DEPTH, size, levels) {
   let score = evaluate(board);
@@ -48,11 +50,10 @@ function minimax(board, depth, isMax, alpha, beta, MAX_DEPTH, size, levels) {
 
   // If this maximizer's move
   if (isMax) {
-    let best = MAX;
+    let best = MIN;
 
     // Traverse all cells
-
-    for (let z = 0; z < levels; z++) {
+    MAXI: for (let z = 0; z < levels; z++) {
       for (let x = 0; x < size; x++) {
         for (let y = 0; y < size; y++) {
           // Check if cell is empty
@@ -75,9 +76,15 @@ function minimax(board, depth, isMax, alpha, beta, MAX_DEPTH, size, levels) {
                 levels
               )
             );
-
             // Undo the move
             board[z][x][y] = "";
+
+            //console.log("best:", best);
+            //console.log("beta:", beta, "alpha", alpha);
+            alpha = Math.max(alpha, best);
+
+            // Alpha Beta Pruning
+            if (beta <= alpha) break MAXI;
           }
         }
       }
@@ -87,11 +94,10 @@ function minimax(board, depth, isMax, alpha, beta, MAX_DEPTH, size, levels) {
 
   // If this minimizer's move
   else {
-    let best = MIN;
+    let best = MAX; //MAX for AB
 
     // Traverse all cells
-
-    for (let z = 0; z < levels; z++) {
+    MINI: for (let z = 0; z < levels; z++) {
       for (let x = 0; x < size; x++) {
         for (let y = 0; y < size; y++) {
           // Check if cell is empty
@@ -118,6 +124,13 @@ function minimax(board, depth, isMax, alpha, beta, MAX_DEPTH, size, levels) {
 
             // Undo the move
             board[z][x][y] = "";
+
+            //console.log("best:", best);
+            //console.log("beta:", beta, "alpha", alpha);
+            beta = Math.min(beta, best);
+
+            // Alpha Beta Pruning
+            if (beta <= alpha) break MINI;
           }
         }
       }
@@ -132,7 +145,7 @@ const minimaxAlgo = (inputBoard, difficulty) => {
   let board = inputBoard.map((level) => level.map((row) => [...row]));
   let size = board[0][1].length;
   let levels = board.length;
-  let MAX_DEPTH = 4;
+  let MAX_DEPTH = 5;
   //3x3:
   //3 is bad, 4 is unbeatable
   //4x4
@@ -142,6 +155,11 @@ const minimaxAlgo = (inputBoard, difficulty) => {
   //3x3x3:
   //3 is bad, 5 seconds, terrible moves
   //4 3m for 1st move, 1m20 for 2nd move, too slow but moves are ok
+  //after pruning:
+  //3x3x3
+  ///4 only 3s for first few moves, pretty good moves not perfect
+  //4x4x4
+  //too slow (1m), bad moves (first free square)
 
   console.log("Running minimax MAX_DEPTH: ", MAX_DEPTH);
 

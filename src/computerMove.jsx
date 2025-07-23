@@ -141,13 +141,15 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
   };
 
   let move;
-  console.log(difficulty, newGrid.length, newGrid[0][1].length);
-  if (
-    (difficulty == "Medium" || difficulty == "Hard") &&
-    newGrid.length == 1 &&
-    newGrid[0][1].length < 5
-  ) {
-    move = minimaxAlgo(newGrid, difficulty);
+
+  if (difficulty == "Medium" || difficulty == "Hard") {
+    if (takeCenterSquare()) return takeCenterSquare();
+
+    if (newGrid.length == 1) {
+      move = minimaxAlgo(newGrid, difficulty);
+    } else if (newGrid[0][1].length == 3) {
+      move = minimaxAlgo(newGrid, difficulty);
+    }
   } else {
     if (morex()) move = morex(); //lines with most x
   }
@@ -158,14 +160,7 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
 
   return move;
 
-  if (difficulty == "Medium" || difficulty == "Hard") {
-    if (difficulty == "Hard") {
-      //if (takeCenterSquare()) return takeCenterSquare();
-      //if (blockxn1()) return blockxn1();
-    }
-    if (moreo()) return moreo(); //lines with most o
-  }
-  if (morex()) return morex(); //lines with most x
+  //if (blockxn1()) return blockxn1();
 
   //look for points that are common in different xPatterns
   //console.log(xPatterns);
