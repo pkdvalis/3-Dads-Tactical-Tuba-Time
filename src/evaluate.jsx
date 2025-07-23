@@ -21,7 +21,6 @@ function evaluate(b) {
   for (let z = 0; z < levels; z++) {
     for (let y = 0; y < n; y++) {
       for (let x = 0; x < n; x++) {
-        console.log(b[z][x][y], b[z][0][y]);
         if (b[z][x][y] != b[z][0][y]) break;
         if (x === n - 1) {
           if (b[z][0][y] === "O") return +10;

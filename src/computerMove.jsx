@@ -1,5 +1,5 @@
 import oMoves from "./oMoves.jsx";
-import evaluate from "./evaluate.jsx";
+import minimaxAlgo from "./minimaxAlgo.jsx";
 
 const winningPatterns = oMoves();
 
@@ -140,10 +140,12 @@ const computerMove = (newGrid, difficulty, grid, xPatterns) => {
     }
   };
 
+  return minimaxAlgo(newGrid, difficulty);
+
   if (difficulty == "Medium" || difficulty == "Hard") {
     if (difficulty == "Hard") {
-      if (takeCenterSquare()) return takeCenterSquare();
-      if (blockxn1()) return blockxn1(); //lines where x needs 1 more to win
+      //if (takeCenterSquare()) return takeCenterSquare();
+      //if (blockxn1()) return blockxn1();
     }
     if (moreo()) return moreo(); //lines with most o
   }

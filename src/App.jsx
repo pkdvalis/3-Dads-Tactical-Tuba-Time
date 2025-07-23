@@ -120,7 +120,7 @@ export default function App() {
     if (sound) playSound(currentTurn);
 
     //update the board
-    const newGrid = [...grid];
+    const newGrid = grid.map((level) => level.map((row) => [...row]));
     newGrid[z][x][y] = turn;
     setGrid(newGrid);
 
@@ -146,7 +146,10 @@ export default function App() {
     if (turn == "X" && oplayer) {
       if (sound) playSound("O");
 
-      let [zz, xx, yy] = computerMove(newGrid, difficulty, grid, xMoves());
+      let thiscar = computerMove(newGrid, difficulty, grid, xMoves());
+      console.log(thiscar);
+      let [zz, xx, yy] = thiscar;
+
       //update omoves db
       oMoves([zz, xx, yy], size, dimensions, false);
       newGrid[zz][xx][yy] = "O";
